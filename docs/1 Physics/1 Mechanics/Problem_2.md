@@ -25,7 +25,7 @@
     }
     .controls {
       margin-top: 20px;
-      text-align: center;
+      text-align: left;
     }
     label {
       margin: 0 10px;
