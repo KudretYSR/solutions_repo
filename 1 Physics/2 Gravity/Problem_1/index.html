@@ -171,65 +171,248 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<p>import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation</p>
+<ol>
+<li>Theoretical Derivation
+Kepler’s Third Law, in its classical form, states that for planets orbiting the Sun:</li>
+</ol>
+<p>𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3</p>
+<p>Where:</p>
+<p>𝑇
+T is the orbital period,</p>
+<p>𝑟
+r is the radius of the orbit (assumed circular here).</p>
+<p>Derivation using Newton’s Laws
+From Newton’s Law of Universal Gravitation and centripetal force:</p>
+<p>𝐹
+gravity
+=
+𝐺
+𝑀
+𝑚
+𝑟
+2
+,
+𝐹
+centripetal
+=
+𝑚
+𝑣
+2
+𝑟
+F 
+gravity
+​
+ = 
+r 
+2</p>
+<p>GMm
+​
+ ,F 
+centripetal
+​
+ = 
+r
+mv 
+2</p>
+<p>​</p>
+<p>Equating the two forces:</p>
+<p>𝐺
+𝑀
+𝑚
+𝑟
+2
+=
+𝑚
+𝑣
+2
+𝑟
+⇒
+𝑣
+2
+=
+𝐺
+𝑀
+𝑟
+r 
+2</p>
+<p>GMm
+​
+ = 
+r
+mv 
+2</p>
+<p>​
+ ⇒v 
+2
+ = 
+r
+GM
+​</p>
+<p>Now, orbital period 
+𝑇
+=
+2
+𝜋
+𝑟
+𝑣
+T= 
+v
+2πr
+​
+ :</p>
+<h1 id="t">𝑇</h1>
+<p>2
+𝜋
+𝑟
+𝑟
+𝐺
+𝑀
+=
+2
+𝜋
+𝑟
+3
+𝐺
+𝑀
+⇒
+𝑇
+2
+=
+4
+𝜋
+2
+𝐺
+𝑀
+𝑟
+3
+T=2πr 
+GM
+r
+​</p>
+<p>​
+ =2π 
+GM
+r 
+3</p>
+<p>​</p>
+<p>​
+ ⇒T 
+2
+ = 
+GM
+4π 
+2</p>
+<p>​
+ r 
+3</p>
+<p>This proves the relationship 
+𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3
+  for circular orbits.</p>
+<ol>
+<li>Real-World Implications
+Moon-Earth System: Measuring the Moon’s period and distance allows calculating Earth’s mass.</li>
+</ol>
+<p>Solar System: Astronomers determine planetary distances from the Sun using observed orbital periods.</p>
+<p>Exoplanet Discovery: Transit observations give 
+𝑇
+T, allowing estimation of 
+𝑟
+r and host star mass.</p>
+<ol>
+<li>Python Simulation: Circular Orbits and Kepler’s Law
+python
+Kopyala
+Düzenle
+import numpy as np
+import matplotlib.pyplot as plt</li>
+</ol>
 <h1 id="constants">Constants</h1>
-<p>G = 6.67430e-11  # Gravitational constant (m^3 kg^-1 s^-2)
-M_sun = 1.989e30  # Sun's mass (kg)</p>
-<h1 id="planetary-data-orbital-radius-m-orbital-period-s">Planetary data: [orbital radius (m), orbital period (s)]</h1>
-<p>planets = {
-    "Mercury": [5.79e10, 7.60e6],
-    "Venus": [1.082e11, 1.94e7],
-    "Earth": [1.496e11, 3.156e7],
-    "Mars": [2.279e11, 5.93e7],
-    "Jupiter": [7.784e11, 3.743e8],
-    "Saturn": [1.429e12, 9.29e8]
-}</p>
-<h1 id="calculate-t2-and-r3">Calculate T^2 and r^3</h1>
-<p>r_cubed = np.array([data[0]<strong>3 for data in planets.values()])
-T_squared = np.array([data[1]</strong>2 for data in planets.values()])</p>
-<h1 id="theoretical-slope">Theoretical slope</h1>
-<p>slope = 4 * np.pi**2 / (G * M_sun)</p>
-<h1 id="plot-t2-vs-r3">Plot T^2 vs r^3</h1>
-<p>plt.figure(figsize=(10, 6))
-plt.scatter(r_cubed, T_squared, color='blue', label='Planets')
-plt.plot(r_cubed, slope * r_cubed, color='red', linestyle='--', label=f'Theoretical: T² = (4π²/(GM))r³')
-plt.xlabel('Orbital Radius Cubed (m³)')
-plt.ylabel('Orbital Period Squared (s²)')
-plt.title('Kepler’s Third Law: T² vs r³ for Solar System Planets')
-plt.legend()
-plt.grid(True)
-plt.savefig('kepler_third_law.png')
-plt.show()</p>
-<h1 id="circular-orbit-animation">Circular Orbit Animation</h1>
-<p>fig, ax = plt.subplots(figsize=(8, 8))
-ax.set_xlim(-1.5e12, 1.5e12)
-ax.set_ylim(-1.5e12, 1.5e12)
-ax.set_xlabel('x (m)')
-ax.set_ylabel('y (m)')
-ax.set_title('Circular Orbits of Planets')
-ax.grid(True)</p>
-<h1 id="plot-sun-at-origin">Plot Sun at origin</h1>
-<p>ax.plot(0, 0, 'yo', markersize=20, label='Sun')</p>
-<h1 id="initialize-planet-lines">Initialize planet lines</h1>
-<p>lines = {}
-for planet, (r, T) in planets.items():
-    lines[planet], = ax.plot([], [], 'o-', label=planet, markersize=8)</p>
-<p>def init():
-    for line in lines.values():
-        line.set_data([], [])
-    return lines.values()</p>
-<p>def animate(t):
-    for planet, (r, T) in planets.items():
-        theta = 2 * np.pi * t / T
-        x = r * np.cos(theta)
-        y = r * np.sin(theta)
-        lines[planet].set_data([x], [y])
-    return lines.values()</p>
-<p>ani = FuncAnimation(fig, animate, init_func=init, frames=1000, interval=50, blit=True)
-plt.legend()
-plt.show()</p>
+<p>G = 6.67430e-11  # m^3 kg^-1 s^-2
+M = 1.989e30     # kg, mass of the Sun</p>
+<h1 id="radii-from-01-au-to-30-au">Radii from 0.1 AU to 30 AU</h1>
+<p>radii_AU = np.linspace(0.1, 30, 500)
+radii_m = radii_AU * 1.496e11  # Convert AU to meters</p>
+<h1 id="compute-periods-using-t-2-sqrtr3-gm">Compute periods using T = 2π sqrt(r^3 / GM)</h1>
+<p>periods_sec = 2 * np.pi * np.sqrt(radii_m**3 / (G * M))
+periods_years = periods_sec / (60 * 60 * 24 * 365.25)</p>
+<h1 id="verify-keplers-law-t2-vs-r3">Verify Kepler's Law: T^2 vs r^3</h1>
+<p>T2 = periods_years<strong>2
+R3 = radii_AU</strong>3</p>
+<h1 id="plotting">Plotting</h1>
+<p>plt.figure(figsize=(12, 5))</p>
+<p>plt.subplot(1, 2, 1)
+plt.plot(radii_AU, periods_years)
+plt.title("Orbital Period vs Radius")
+plt.xlabel("Orbital Radius (AU)")
+plt.ylabel("Orbital Period (Years)")
+plt.grid(True)</p>
+<p>plt.subplot(1, 2, 2)
+plt.plot(R3, T2, color='green')
+plt.title("Kepler's Third Law: <span class="arithmatex">\(T^2\)</span> vs <span class="arithmatex">\(r^3\)</span>")
+plt.xlabel("r³ (AU³)")
+plt.ylabel("T² (Years²)")
+plt.grid(True)</p>
+<p>plt.tight_layout()
+plt.show()
+4. Discussion on Elliptical Orbits
+Kepler’s Third Law also holds for elliptical orbits when using the semi-major axis 
+𝑎
+a:</p>
+<p>𝑇
+2
+=
+4
+𝜋
+2
+𝐺
+(
+𝑀
++
+𝑚
+)
+𝑎
+3
+T 
+2
+ = 
+G(M+m)
+4π 
+2</p>
+<p>​
+ a 
+3</p>
+<p>This is especially important for binary star systems or moons where the mass of the orbiting body isn't negligible. It also applies to artificial satellites and moons of other planets.</p>
+<ol>
+<li>Conclusion
+Kepler’s Third Law provides a foundational relationship in celestial mechanics. From planet discovery to calculating stellar masses, the 
+𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3
+  law, rooted in Newtonian physics, is central to our understanding of orbital dynamics.</li>
+</ol>
+<p>This relationship simplifies the modeling and prediction of orbits across the universe, from our Moon to exoplanets light-years away.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
