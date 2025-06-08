@@ -7,7 +7,7 @@
   <style>
     body {
       background: #111;
-      color: #eee;
+      color: #ddd;
       font-family: sans-serif;
       line-height: 1.6;
       max-width: 800px;
