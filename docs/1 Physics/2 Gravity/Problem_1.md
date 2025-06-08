@@ -298,7 +298,7 @@ Log-log plot slope ≈ 1.5 → confirms power-law with exponent
 ​
  .
 
-🪐 Extensions to Elliptical Orbits
+ Extensions to Elliptical Orbits
 Kepler’s Third Law for elliptical orbits uses the semi-major axis 
 𝑎
 a:
