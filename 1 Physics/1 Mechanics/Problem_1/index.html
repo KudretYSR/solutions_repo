@@ -48,6 +48,18 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#1-theoretical-foundation">1. Theoretical Foundation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-analysis-of-the-range">2. Analysis of the Range</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#observations">Observations:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-practical-applications">3. Practical Applications</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-implementation-javascript-simulation-with-plotly">4. Implementation: JavaScript Simulation with Plotly</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
@@ -172,302 +184,104 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
-<p>Projectile Motion Analysis
-1. Theoretical Foundation
-To derive the equations of motion, we start with Newton's second law:</p>
-<p>𝐹
-⃗
-=
-𝑚
-𝑎
-⃗
-F
- =m 
-a</p>
-<p>For projectile motion (ignoring air resistance), the only force acting after launch is gravity:</p>
-<p>Horizontal motion: <span class="arithmatex">\(a_x = 0\)</span></p>
-<p>Vertical motion: <span class="arithmatex">\(a_y = -g\)</span></p>
-<p>Let the initial velocity be <span class="arithmatex">\(v_0\)</span> and the angle of projection be <span class="arithmatex">\(\theta\)</span>. Then the velocity components are:</p>
-<p>𝑣
-0
-𝑥
-=
-𝑣
-0
-cos
-⁡
-𝜃
-,
-𝑣
-0
-𝑦
-=
-𝑣
-0
-sin
-⁡
-𝜃
-v 
-0x
-​
- =v 
-0
-​
- cosθ,v 
-0y
-​
- =v 
-0
-​
- sinθ
-The position at time <span class="arithmatex">\(t\)</span> is:</p>
-<p>Horizontal:</p>
-<p>𝑥
-(
-𝑡
-)
-=
-𝑣
-0
-𝑥
-𝑡
-=
-𝑣
-0
-cos
-⁡
-𝜃
-⋅
-𝑡
-x(t)=v 
-0x
-​
- t=v 
-0
-​
- cosθ⋅t
-Vertical:</p>
-<p>𝑦
-(
-𝑡
-)
-=
-𝑣
-0
-𝑦
-𝑡
-−
-1
-2
-𝑔
-𝑡
-2
-=
-𝑣
-0
-sin
-⁡
-𝜃
-⋅
-𝑡
-−
-1
-2
-𝑔
-𝑡
-2
-y(t)=v 
-0y
-​
- t− 
-2
-1
-​
- gt 
-2
- =v 
-0
-​
- sinθ⋅t− 
-2
-1
-​
- gt 
-2</p>
-<p>To find the time of flight, set <span class="arithmatex">\(y(t) = 0\)</span>:</p>
-<h1 id="0">0</h1>
-<p>𝑣
-0
-sin
-⁡
-𝜃
-⋅
-𝑡
-−
-1
-2
-𝑔
-𝑡
-2
-⇒
-𝑡
-=
-2
-𝑣
-0
-sin
-⁡
-𝜃
-𝑔
-0=v 
-0
-​
- sinθ⋅t− 
-2
-1
-​
- gt 
-2
- ⇒t= 
-g
-2v 
-0
-​
- sinθ
-​</p>
-<p>Range (<span class="arithmatex">\(R\)</span>) is the horizontal distance when the projectile lands:</p>
-<h1 id="r">𝑅</h1>
-<p>𝑥
-(
-𝑡
-)
-=
-𝑣
-0
-cos
-⁡
-𝜃
-⋅
-2
-𝑣
-0
-sin
-⁡
-𝜃
-𝑔
-=
-𝑣
-0
-2
-sin
-⁡
-(
-2
-𝜃
-)
-𝑔
-R=x(t)=v 
-0
-​
- cosθ⋅ 
-g
-2v 
-0
-​
- sinθ
-​
- = 
-g
-v 
-0
-2
-​
- sin(2θ)
-​</p>
-<p>Variations in Initial Conditions
-Different initial velocities or angles create a family of parabolic trajectories.</p>
-<ol>
-<li>Analysis of the Range
-Range as a Function of Angle
-The horizontal range is:</li>
-</ol>
-<p>𝑅
-(
-𝜃
-)
-=
-𝑣
-0
-2
-sin
-⁡
-(
-2
-𝜃
-)
-𝑔
-R(θ)= 
-g
-v 
-0
-2
-​
- sin(2θ)
-​</p>
-<p>Maximum range occurs when <span class="arithmatex">\(\sin(2\theta)\)</span> is maximum:</p>
-<p>sin
-⁡
-(
-2
-𝜃
-)
-=
-1
-⇒
-𝜃
-=
-45
-∘
-sin(2θ)=1⇒θ=45 
-∘</p>
-<p>Dependence on Other Parameters
-Initial velocity (<span class="arithmatex">\(v_0\)</span>): Range is proportional to <span class="arithmatex">\(v_0^2\)</span></p>
-<p>Gravitational acceleration (<span class="arithmatex">\(g\)</span>): Range is inversely proportional to <span class="arithmatex">\(g\)</span></p>
-<ol>
-<li>Practical Applications
-This model can be extended to:</li>
-</ol>
-<p>Uneven terrain: Adjust the endpoint condition <span class="arithmatex">\(y(t) = h\)</span> instead of 0.</p>
-<p>Air resistance: Introduce drag forces proportional to velocity, requiring numerical integration.</p>
-<ol>
-<li>Implementation
-Python Code (with Visualization)
-python
-Copy
-Edit
-import numpy as np
-import matplotlib.pyplot as plt</li>
-</ol>
-<h1 id="constants">Constants</h1>
-<p>g = 9.81  # gravity (m/s^2)</p>
-<p>def compute_range(v0, theta_deg, g=9.81):
-    theta_rad = np.radians(theta_deg)
-    return (v0**2 * np.sin(2 * theta_rad)) / g</p>
-<h1 id="parameters">Parameters</h1>
-<p>v0_values = [10, 20, 30]  # m/s
-angles = np.linspace(0, 90, 300)</p>
-<h1 id="plotting">Plotting</h1>
-<p>plt.figure(figsize=(10, 6))
-for v0 in v0_values:
-    ranges = [compute_range(v0, theta) for theta in angles]
-    plt.plot(angles, ranges, label=f'<span class="arithmatex">\(v_0 = {v0}\)</span> m/s')</p>
-<p>plt.title('Projectile Range as a Function of Angle of Projection')
-plt.xlabel('Angle (degrees)')
-plt.ylabel('Range (meters)')
-plt.legend()
-plt.grid(True)
-plt.show()
-This code simulates the projectile motion for different initial velocities and visualizes the range as a function of launch angle.</p>
+<p># Projectile Motion Analysis</p>
+<h2 id="1-theoretical-foundation">1. Theoretical Foundation</h2>
+<p>Projectile motion describes the motion of an object thrown into the air, subject only to <strong>gravitational acceleration</strong>.</p>
+<p>The equations of motion for a projectile (assuming no air resistance) are derived from Newton's Second Law:</p>
+<ul>
+<li>
+<p><strong>Horizontal motion (constant velocity):</strong>
+  $$
+  x(t) = v_0 \cdot \cos(\theta) \cdot t
+  $$</p>
+</li>
+<li>
+<p><strong>Vertical motion (accelerated motion):</strong>
+  $$
+  y(t) = v_0 \cdot \sin(\theta) \cdot t - \frac{1}{2}gt^2
+  $$</p>
+</li>
+</ul>
+<p>Where:
+- <span class="arithmatex">\( v_0 \)</span>: initial velocity<br/>
+- <span class="arithmatex">\( \theta \)</span>: launch angle<br/>
+- <span class="arithmatex">\( g \)</span>: gravitational acceleration (9.81 m/s²)</p>
+<blockquote>
+<p>Different values of <span class="arithmatex">\( v_0 \)</span> and <span class="arithmatex">\( \theta \)</span> yield different trajectories — these are the "family of solutions".</p>
+</blockquote>
+<hr/>
+<h2 id="2-analysis-of-the-range">2. Analysis of the Range</h2>
+<p>The <strong>horizontal range</strong> <span class="arithmatex">\( R \)</span> of a projectile launched from ground level is given by:
+$$
+R = \frac{v_0^2 \cdot \sin(2\theta)}{g}
+$$</p>
+<h3 id="observations">Observations:</h3>
+<ul>
+<li>The range is <strong>maximum at <span class="arithmatex">\( \theta = 45^\circ \)</span></strong>.</li>
+<li>Increasing <span class="arithmatex">\( v_0 \)</span> increases range quadratically.</li>
+<li>Increasing <span class="arithmatex">\( g \)</span> (stronger gravity) reduces range.</li>
+</ul>
+<hr/>
+<h2 id="3-practical-applications">3. Practical Applications</h2>
+<p>Projectile motion is used in:
+- Sports: calculating ball trajectories in football or basketball.
+- Engineering: designing trajectories in robotics or military.
+- Gaming &amp; Simulation: realistic arc movement in game physics.</p>
+<blockquote>
+<p>For more accurate models, <strong>air resistance</strong>, <strong>wind</strong>, or <strong>uneven terrain</strong> can be added.</p>
+</blockquote>
+<hr/>
+<h2 id="4-implementation-javascript-simulation-with-plotly">4. Implementation: JavaScript Simulation with Plotly</h2>
+<p>Adjust the angle using the slider to observe how range changes.</p>
+<div id="plot" style="width:100%;max-width:900px;height:500px;"></div>
+<p><input id="angleSlider" max="80" min="10" type="range" value="45"/></p>
+<p>Angle: <span id="angleValue">45</span>°</p>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+function simulateProjectile(angleDeg) {
+  const v0 = 50; // initial velocity (m/s)
+  const g = 9.81; // gravity (m/s^2)
+  const theta = angleDeg * Math.PI / 180;
+  const t_flight = (2 * v0 * Math.sin(theta)) / g;
+
+  let xData = [], yData = [];
+  for (let t = 0; t <= t_flight; t += 0.05) {
+    const x = v0 * Math.cos(theta) * t;
+    const y = v0 * Math.sin(theta) * t - 0.5 * g * t * t;
+    if (y >= 0) {
+      xData.push(x);
+      yData.push(y);
+    }
+  }
+
+  const trace = {
+    x: xData,
+    y: yData,
+    mode: 'lines+markers',
+    name: `θ = ${angleDeg}°`,
+    line: { shape: 'spline' }
+  };
+
+  const layout = {
+    title: 'Projectile Motion Trajectory',
+    xaxis: { title: 'Horizontal Distance (m)' },
+    yaxis: { title: 'Vertical Height (m)' }
+  };
+
+  Plotly.newPlot('plot', [trace], layout);
+}
+
+const slider = document.getElementById('angleSlider');
+const angleLabel = document.getElementById('angleValue');
+slider.addEventListener('input', () => {
+  const angle = parseInt(slider.value);
+  angleLabel.textContent = angle;
+  simulateProjectile(angle);
+});
+
+// Initial plot
+simulateProjectile(parseInt(slider.value));
+</script>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
