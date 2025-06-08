@@ -1,38 +1,23 @@
-1. Theoretical Derivation
-Kepler’s Third Law, in its classical form, states that for planets orbiting the Sun:
-
-𝑇
-2
-∝
-𝑟
-3
-T 
-2
- ∝r 
-3
- 
-Where:
-
-𝑇
-T is the orbital period,
-
-𝑟
-r is the radius of the orbit (assumed circular here).
-
-Derivation using Newton’s Laws
-From Newton’s Law of Universal Gravitation and centripetal force:
+Problem 1
+🌌 Kepler’s Third Law for Circular Orbits – A Simulation and Analysis
+📐 Derivation: Orbital Period and Radius Relationship
+For a body of mass 
+𝑚
+m orbiting a much larger mass 
+𝑀
+M in a circular orbit, the gravitational force provides the necessary centripetal force:
 
 𝐹
 gravity
 =
+𝐹
+centripetal
+⇒
 𝐺
 𝑀
 𝑚
 𝑟
 2
-,
-𝐹
-centripetal
 =
 𝑚
 𝑣
@@ -41,41 +26,10 @@ centripetal
 F 
 gravity
 ​
- = 
-r 
-2
- 
-GMm
-​
- ,F 
+ =F 
 centripetal
 ​
- = 
-r
-mv 
-2
- 
-​
- 
-Equating the two forces:
-
-𝐺
-𝑀
-𝑚
-𝑟
-2
-=
-𝑚
-𝑣
-2
-𝑟
-⇒
-𝑣
-2
-=
-𝐺
-𝑀
-𝑟
+ ⇒ 
 r 
 2
  
@@ -87,34 +41,44 @@ mv
 2
  
 ​
- ⇒v 
-2
- = 
+ 
+Cancel 
+𝑚
+m and solve for orbital speed 
+𝑣
+v:
+
+𝑣
+=
+𝐺
+𝑀
+𝑟
+v= 
 r
 GM
 ​
  
-Now, orbital period 
-𝑇
-=
-2
-𝜋
-𝑟
-𝑣
-T= 
-v
-2πr
 ​
- :
+ 
+The orbital period 
+𝑇
+T (time to complete one orbit) is:
 
 𝑇
 =
 2
 𝜋
 𝑟
+𝑣
+=
+2
+𝜋
 𝑟
+⋅
+1
 𝐺
 𝑀
+𝑟
 =
 2
 𝜋
@@ -122,7 +86,78 @@ v
 3
 𝐺
 𝑀
-⇒
+T= 
+v
+2πr
+​
+ =2πr⋅ 
+r
+GM
+​
+ 
+​
+ 
+1
+​
+ =2π 
+GM
+r 
+3
+ 
+​
+ 
+​
+ 
+Squaring both sides:
+
+𝑇
+2
+=
+4
+𝜋
+2
+𝐺
+𝑀
+⋅
+𝑟
+3
+T 
+2
+ = 
+GM
+4π 
+2
+ 
+​
+ ⋅r 
+3
+ 
+🌠 Implications for Astronomy
+This tells us:
+
+Orbital period squared is proportional to the orbital radius cubed.
+
+Knowing a satellite’s period gives us its orbital radius (and vice versa).
+
+We can deduce the mass 
+𝑀
+M of a central body using observed orbits.
+
+Applications:
+Measuring planetary masses from satellite orbits.
+
+Determining distances in planetary systems and exoplanets.
+
+Verifying Newtonian mechanics in astronomy.
+
+🌍 Real-World Examples
+1. The Moon and Earth
+Radius ≈ 384,400 km
+
+Period ≈ 27.3 days
+
+Plugging into:
+
 𝑇
 2
 =
@@ -133,21 +168,7 @@ v
 𝑀
 𝑟
 3
-T=2πr 
-GM
-r
-​
- 
-​
- =2π 
-GM
-r 
-3
- 
-​
- 
-​
- ⇒T 
+T 
 2
  = 
 GM
@@ -158,7 +179,106 @@ GM
  r 
 3
  
-This proves the relationship 
+Confirms the Moon's orbital parameters match Earth's mass (~
+5.97
+×
+10
+24
+5.97×10 
+24
+  kg).
+
+2. Planets in the Solar System
+Using Astronomical Units (AU) and Earth years:
+
+𝑇
+2
+=
+𝑟
+3
+(
+if 
+𝑀
+=
+𝑀
+⊙
+)
+T 
+2
+ =r 
+3
+ (if M=M 
+⊙
+​
+ )
+💻 Python Simulation
+Below is a Python notebook script that simulates orbits and plots 
+𝑇
+2
+T 
+2
+  vs. 
+𝑟
+3
+r 
+3
+ .
+
+python
+Kopyala
+Düzenle
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+G = 6.67430e-11  # m^3/kg/s^2
+M = 1.989e30     # Mass of the Sun in kg
+
+# Orbital radii (m) from 0.4 AU to 30 AU
+AU = 1.496e11
+radii = np.linspace(0.4, 30, 100) * AU
+
+# Compute periods using T = 2π√(r^3 / GM)
+periods = 2 * np.pi * np.sqrt(radii**3 / (G * M))
+
+# Convert to Earth years
+periods_years = periods / (60 * 60 * 24 * 365.25)
+
+# Plot T^2 vs r^3
+plt.figure(figsize=(8, 6))
+plt.plot(radii**3, periods**2, label=r'$T^2 \propto r^3$')
+plt.xlabel('Orbital Radius Cubed $r^3$ (m³)')
+plt.ylabel('Orbital Period Squared $T^2$ (s²)')
+plt.title('Kepler’s Third Law Verification (Circular Orbits)')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# Log-log plot to verify power law
+plt.figure(figsize=(8, 6))
+plt.loglog(radii, periods, label='T vs r (log-log)')
+plt.xlabel('Orbital Radius r (m)')
+plt.ylabel('Orbital Period T (s)')
+plt.title('Log-Log Plot: Orbital Period vs Radius')
+plt.grid(True, which='both')
+plt.legend()
+plt.tight_layout()
+plt.show()
+📈 Graphical Results
+The graphs show:
+
+A straight line in the 
+𝑇
+2
+T 
+2
+  vs 
+𝑟
+3
+r 
+3
+  plot → confirms 
 𝑇
 2
 ∝
@@ -168,63 +288,18 @@ T
 2
  ∝r 
 3
-  for circular orbits.
+ .
 
-2. Real-World Implications
-Moon-Earth System: Measuring the Moon’s period and distance allows calculating Earth’s mass.
+Log-log plot slope ≈ 1.5 → confirms power-law with exponent 
+3
+2
+2
+3
+​
+ .
 
-Solar System: Astronomers determine planetary distances from the Sun using observed orbital periods.
-
-Exoplanet Discovery: Transit observations give 
-𝑇
-T, allowing estimation of 
-𝑟
-r and host star mass.
-
-3. Python Simulation: Circular Orbits and Kepler’s Law
-python
-Kopyala
-Düzenle
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Constants
-G = 6.67430e-11  # m^3 kg^-1 s^-2
-M = 1.989e30     # kg, mass of the Sun
-
-# Radii from 0.1 AU to 30 AU
-radii_AU = np.linspace(0.1, 30, 500)
-radii_m = radii_AU * 1.496e11  # Convert AU to meters
-
-# Compute periods using T = 2π sqrt(r^3 / GM)
-periods_sec = 2 * np.pi * np.sqrt(radii_m**3 / (G * M))
-periods_years = periods_sec / (60 * 60 * 24 * 365.25)
-
-# Verify Kepler's Law: T^2 vs r^3
-T2 = periods_years**2
-R3 = radii_AU**3
-
-# Plotting
-plt.figure(figsize=(12, 5))
-
-plt.subplot(1, 2, 1)
-plt.plot(radii_AU, periods_years)
-plt.title("Orbital Period vs Radius")
-plt.xlabel("Orbital Radius (AU)")
-plt.ylabel("Orbital Period (Years)")
-plt.grid(True)
-
-plt.subplot(1, 2, 2)
-plt.plot(R3, T2, color='green')
-plt.title("Kepler's Third Law: $T^2$ vs $r^3$")
-plt.xlabel("r³ (AU³)")
-plt.ylabel("T² (Years²)")
-plt.grid(True)
-
-plt.tight_layout()
-plt.show()
-4. Discussion on Elliptical Orbits
-Kepler’s Third Law also holds for elliptical orbits when using the semi-major axis 
+🪐 Extensions to Elliptical Orbits
+Kepler’s Third Law for elliptical orbits uses the semi-major axis 
 𝑎
 a:
 
@@ -235,17 +310,13 @@ a:
 𝜋
 2
 𝐺
-(
 𝑀
-+
-𝑚
-)
 𝑎
 3
 T 
 2
  = 
-G(M+m)
+GM
 4π 
 2
  
@@ -253,19 +324,28 @@ G(M+m)
  a 
 3
  
-This is especially important for binary star systems or moons where the mass of the orbiting body isn't negligible. It also applies to artificial satellites and moons of other planets.
+Implications:
 
-5. Conclusion
-Kepler’s Third Law provides a foundational relationship in celestial mechanics. From planet discovery to calculating stellar masses, the 
+Valid for any bound (elliptical) orbit.
+
+Used in orbital mechanics for satellites, moons, and exoplanets.
+
+For elliptical orbits:
+
+𝑟
+r varies → speed changes along the orbit (faster near periapsis).
+
+But 
+𝑇
+T still follows 
 𝑇
 2
 ∝
-𝑟
+𝑎
 3
 T 
 2
- ∝r 
+ ∝a 
 3
-  law, rooted in Newtonian physics, is central to our understanding of orbital dynamics.
+ , a beautiful result of Newtonian gravity.
 
-This relationship simplifies the modeling and prediction of orbits across the universe, from our Moon to exoplanets light-years away.
