@@ -55,8 +55,6 @@
 <li class="toctree-l1 current"><a class="reference internal current">2 Gravity</a>
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
-<ul class="current">
-</ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
 </li>
@@ -172,86 +170,47 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <ol>
-<li>Derivation of Kepler's Third Law for Circular Orbits</li>
+<li>Derivation of the Relationship Between Period and Radius</li>
 </ol>
-<p>We begin with Newton's Law of Gravitation and the concept of centripetal force.</p>
+<p>For a body in a circular orbit around a much larger central mass (e.g., planet around a star), we equate gravitational force and centripetal force:</p>
 <p>Gravitational Force:</p>
 <p>Centripetal Force:</p>
-<p>Equating these for a body in circular orbit:</p>
-<p>The orbital period  is:</p>
-<p>Substituting for :</p>
-<p>This is Kepler's Third Law:</p>
+<p>Equating:</p>
+<p>The orbital period  is related to the orbital speed  and the circumference:</p>
+<p>Thus, for circular orbits:</p>
+<p>This is Kepler's Third Law for circular orbits.</p>
 <ol>
-<li>Astronomical Implications</li>
+<li>Implications for Astronomy</li>
 </ol>
-<p>Mass Determination: Given  and , one can solve for the mass  of the central body:</p>
-<p>Distance Estimation: Given the orbital period and central mass, one can determine the orbital radius.</p>
+<p>Mass Calculation: Knowing  and , we can rearrange Kepler's law to calculate the mass  of a central body.</p>
+<p>Distance Measurement: Knowing the period and mass, one can derive the distance (orbital radius).</p>
+<p>Predictive Tool: It's essential in predicting satellite motion and planning space missions.</p>
 <ol>
 <li>Real-World Examples</li>
 </ol>
-<p>Moon-Earth System:</p>
-<p>Radius:  m</p>
-<p>Period:  days</p>
-<p>This data allows calculation of Earth's mass using Kepler's Law.</p>
-<p>Planetary Orbits:</p>
-<p>For planets in the Solar System,  holds when using the semi-major axis  for elliptical orbits.</p>
-<ol>
-<li>Python Simulation of Circular Orbits</li>
-</ol>
-<p>import numpy as np
-import matplotlib.pyplot as plt</p>
-<h1 id="constants">Constants</h1>
-<p>G = 6.67430e-11  # m^3 kg^-1 s^-2
-M_sun = 1.989e30  # kg
-AU = 1.496e11  # meters
-YEAR_SEC = 365.25 * 24 * 3600  # seconds</p>
-<h1 id="planetary-distances-in-au-and-conversion-to-meters">Planetary distances in AU and conversion to meters</h1>
-<p>radii_au = np.array([0.39, 0.72, 1.0, 1.52, 5.2, 9.58, 19.2, 30.05])
-radii_m = radii_au * AU</p>
-<h1 id="orbital-periods-in-seconds-using-keplers-law">Orbital periods in seconds using Kepler's Law</h1>
-<p>T_sec = 2 * np.pi * np.sqrt(radii_m**3 / (G * M_sun))
-T_yrs = T_sec / YEAR_SEC</p>
-<h1 id="t2-and-r3-for-verification">T^2 and r^3 for verification</h1>
-<p>T2 = T_yrs<strong>2
-r3 = radii_au</strong>3</p>
-<h1 id="plot-t2-vs-r3">Plot T^2 vs r^3</h1>
-<p>plt.figure(figsize=(12, 5))</p>
-<p>plt.subplot(1, 2, 1)
-plt.plot(r3, T2, 'bo-', label='Kepler Data')
-plt.plot(r3, r3, 'r--', label='T^2 = r^3')
-plt.xlabel('r^3 (AU^3)')
-plt.ylabel('T^2 (years^2)')
-plt.title("Kepler's Third Law")
-plt.legend()
-plt.grid(True)</p>
-<h1 id="plot-orbits">Plot orbits</h1>
-<p>theta = np.linspace(0, 2 * np.pi, 100)
-plt.subplot(1, 2, 2)
-for r in radii_au:
-    plt.plot(r * np.cos(theta), r * np.sin(theta), label=f'{r:.2f} AU')
-plt.plot(0, 0, 'yo', label='Sun')
-plt.axis('equal')
-plt.xlabel('x (AU)')
-plt.ylabel('y (AU)')
-plt.title('Circular Orbits')
-plt.legend()
-plt.grid(True)</p>
-<p>plt.tight_layout()
-plt.show()</p>
-<ol>
-<li>Extension to Elliptical Orbits</li>
-</ol>
-<p>For elliptical orbits, the same relationship holds using the semi-major axis :</p>
-<p>This allows analysis of:</p>
-<p>Eccentric comets</p>
-<p>Binary star systems</p>
-<p>Exoplanets with non-circular orbits</p>
-<ol>
-<li>Conclusion</li>
-</ol>
-<p>Kepler's Third Law provides a powerful tool in celestial mechanics.</p>
-<p>Real and simulated data validate .</p>
-<p>The law extends naturally to elliptical orbits using the semi-major axis.</p>
+<p>Moon Around Earth</p>
+<p>Orbital radius:  m</p>
+<p>Orbital period:  days</p>
+<p>Planets in the Solar System</p>
+<p>Verified values of  and  show  relationship</p>
+<p>Planet</p>
+<p>Radius (AU)</p>
+<p>Period (years)</p>
+<p>Earth</p>
+<p>1.00</p>
+<p>1.00</p>
+<p>1.00</p>
+<p>1.00</p>
+<p>Mars</p>
+<p>1.52</p>
+<p>1.88</p>
+<p>3.53</p>
+<p>3.51</p>
+<p>Jupiter</p>
+<p>5.20</p>
+<p>11.86</p>
+<p>140.7</p>
+<p>140.6</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
