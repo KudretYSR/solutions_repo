@@ -172,6 +172,308 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<p>Orbital Mechanics: Circular Orbits and Kepler's Third Law
+1. Deriving the Period-Radius Relationship
+For a body of mass 
+𝑚
+m in a circular orbit around a much larger body of mass 
+𝑀
+M, the gravitational force provides the necessary centripetal force:</p>
+<p>𝐹
+gravity
+=
+𝐺
+𝑀
+𝑚
+𝑟
+2
+,
+𝐹
+centripetal
+=
+𝑚
+𝑣
+2
+𝑟
+F 
+gravity
+​
+ = 
+r 
+2</p>
+<p>GMm
+​
+ ,F 
+centripetal
+​
+ = 
+r
+mv 
+2</p>
+<p>​</p>
+<p>Equating both:</p>
+<p>𝐺
+𝑀
+𝑚
+𝑟
+2
+=
+𝑚
+𝑣
+2
+𝑟
+⇒
+𝑣
+2
+=
+𝐺
+𝑀
+𝑟
+r 
+2</p>
+<p>GMm
+​
+ = 
+r
+mv 
+2</p>
+<p>​
+ ⇒v 
+2
+ = 
+r
+GM
+​</p>
+<p>The orbital period 
+𝑇
+T is related to the orbital speed 
+𝑣
+v by:</p>
+<h1 id="t">𝑇</h1>
+<p>2
+𝜋
+𝑟
+𝑣
+⇒
+𝑇
+2
+=
+4
+𝜋
+2
+𝑟
+2
+𝑣
+2
+T= 
+v
+2πr
+​
+ ⇒T 
+2
+ = 
+v 
+2</p>
+<p>4π 
+2
+ r 
+2</p>
+<p>​</p>
+<p>Substituting for 
+𝑣
+2
+v 
+2
+ :</p>
+<p>𝑇
+2
+=
+4
+𝜋
+2
+𝑟
+3
+𝐺
+𝑀
+T 
+2
+ = 
+GM
+4π 
+2
+ r 
+3</p>
+<p>​</p>
+<p>This is Kepler’s Third Law for circular orbits:</p>
+<p>𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3</p>
+<ol>
+<li>Astronomical Implications
+Determining Planetary Masses: Rearranging the equation:</li>
+</ol>
+<h1 id="m">𝑀</h1>
+<p>4
+𝜋
+2
+𝑟
+3
+𝐺
+𝑇
+2
+M= 
+GT 
+2</p>
+<p>4π 
+2
+ r 
+3</p>
+<p>​</p>
+<p>We can determine the mass of a central object (like Earth or the Sun) using the orbital radius and period of a satellite or planet.</p>
+<p>Measuring Distances: Given a known mass, if we measure the orbital period, we can compute the orbital radius — a powerful tool for celestial mapping.</p>
+<ol>
+<li>Real-World Examples
+3.1 Moon Orbiting Earth
+Average radius 
+𝑟
+≈
+384
+,
+400
+r≈384,400 km</li>
+</ol>
+<p>Orbital period 
+𝑇
+≈
+27.3
+T≈27.3 days</p>
+<p>Using the formula, the computed mass of Earth aligns well with known values.</p>
+<p>3.2 Planets Around the Sun
+Using Kepler's law normalized to Earth's orbit:</p>
+<p>(
+𝑇
+𝑇
+⊕
+)
+2
+=
+(
+𝑟
+𝑟
+⊕
+)
+3
+( 
+T 
+⊕
+​</p>
+<p>T
+​
+ ) 
+2
+ =( 
+r 
+⊕
+​</p>
+<p>r
+​
+ ) 
+3</p>
+<p>This approximation is accurate for all planets assuming circular orbits.</p>
+<ol>
+<li>Python Simulation and Verification
+Below is a Python script using matplotlib and numpy.</li>
+</ol>
+<p>python
+Kopyala
+Düzenle
+import numpy as np
+import matplotlib.pyplot as plt</p>
+<h1 id="constants">Constants</h1>
+<p>G = 6.67430e-11  # gravitational constant (m^3 kg^-1 s^-2)
+M = 1.989e30     # mass of Sun (kg)</p>
+<h1 id="simulate-orbits-at-different-radii-in-au-converted-to-meters">Simulate orbits at different radii (in AU converted to meters)</h1>
+<p>radii_au = np.array([0.39, 0.72, 1.0, 1.52, 5.2, 9.58, 19.2, 30.05])
+radii_m = radii_au * 1.496e11  # AU to meters</p>
+<h1 id="compute-periods-using-keplers-third-law">Compute periods using Kepler's third law</h1>
+<p>T = 2 * np.pi * np.sqrt(radii_m**3 / (G * M))  # in seconds
+T_years = T / (60 * 60 * 24 * 365.25)</p>
+<h1 id="verify-t2-vs-r3">Verify T^2 vs r^3</h1>
+<p>T2 = T_years<strong>2
+r3 = radii_au</strong>3</p>
+<h1 id="plotting">Plotting</h1>
+<p>plt.figure(figsize=(10, 5))</p>
+<h1 id="t2-vs-r3">T^2 vs r^3</h1>
+<p>plt.subplot(1, 2, 1)
+plt.plot(r3, T2, 'o-')
+plt.xlabel('<span class="arithmatex">\(r^3\)</span> (AU³)')
+plt.ylabel('<span class="arithmatex">\(T^2\)</span> (yr²)')
+plt.title('Kepler’s Third Law: <span class="arithmatex">\(T^2\)</span> vs <span class="arithmatex">\(r^3\)</span>')</p>
+<h1 id="orbit-visualization">Orbit visualization</h1>
+<p>theta = np.linspace(0, 2*np.pi, 100)
+plt.subplot(1, 2, 2)
+for r in radii_au:
+    x = r * np.cos(theta)
+    y = r * np.sin(theta)
+    plt.plot(x, y, label=f'{r:.2f} AU')
+plt.plot(0, 0, 'yo', label='Sun')
+plt.axis('equal')
+plt.title('Circular Orbits')
+plt.xlabel('x (AU)')
+plt.ylabel('y (AU)')
+plt.legend()
+plt.tight_layout()
+plt.show()
+5. Elliptical Orbits and Generalization
+Kepler’s Third Law still holds for elliptical orbits when using the semi-major axis 
+𝑎
+a in place of radius:</p>
+<p>𝑇
+2
+=
+4
+𝜋
+2
+𝑎
+3
+𝐺
+𝑀
+T 
+2
+ = 
+GM
+4π 
+2
+ a 
+3</p>
+<p>​</p>
+<p>This generalization is critical in modeling:</p>
+<p>Comets</p>
+<p>Binary stars</p>
+<p>Exoplanets</p>
+<ol>
+<li>Summary
+We derived Kepler’s Third Law from Newtonian mechanics.</li>
+</ol>
+<p>This relationship is crucial for celestial navigation and astrophysical measurements.</p>
+<p>Simulation confirms 
+𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3
+ .</p>
+<p>The law extends naturally to elliptical orbits.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
