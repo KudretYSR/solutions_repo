@@ -76,7 +76,7 @@
     <p><strong>Time of Flight:</strong> <span id="time">--</span> s</p>
   </div>
 
-  <canvas id="canvas" width="800" height="400"></canvas>
+  <canvas id="canvas" width="720" height="400"></canvas>
 
   <script>
     const g = 9.81;
