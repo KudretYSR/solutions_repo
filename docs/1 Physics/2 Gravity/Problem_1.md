@@ -1,70 +1,271 @@
+1. Theoretical Derivation
+Kepler’s Third Law, in its classical form, states that for planets orbiting the Sun:
+
+𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3
+ 
+Where:
+
+𝑇
+T is the orbital period,
+
+𝑟
+r is the radius of the orbit (assumed circular here).
+
+Derivation using Newton’s Laws
+From Newton’s Law of Universal Gravitation and centripetal force:
+
+𝐹
+gravity
+=
+𝐺
+𝑀
+𝑚
+𝑟
+2
+,
+𝐹
+centripetal
+=
+𝑚
+𝑣
+2
+𝑟
+F 
+gravity
+​
+ = 
+r 
+2
+ 
+GMm
+​
+ ,F 
+centripetal
+​
+ = 
+r
+mv 
+2
+ 
+​
+ 
+Equating the two forces:
+
+𝐺
+𝑀
+𝑚
+𝑟
+2
+=
+𝑚
+𝑣
+2
+𝑟
+⇒
+𝑣
+2
+=
+𝐺
+𝑀
+𝑟
+r 
+2
+ 
+GMm
+​
+ = 
+r
+mv 
+2
+ 
+​
+ ⇒v 
+2
+ = 
+r
+GM
+​
+ 
+Now, orbital period 
+𝑇
+=
+2
+𝜋
+𝑟
+𝑣
+T= 
+v
+2πr
+​
+ :
+
+𝑇
+=
+2
+𝜋
+𝑟
+𝑟
+𝐺
+𝑀
+=
+2
+𝜋
+𝑟
+3
+𝐺
+𝑀
+⇒
+𝑇
+2
+=
+4
+𝜋
+2
+𝐺
+𝑀
+𝑟
+3
+T=2πr 
+GM
+r
+​
+ 
+​
+ =2π 
+GM
+r 
+3
+ 
+​
+ 
+​
+ ⇒T 
+2
+ = 
+GM
+4π 
+2
+ 
+​
+ r 
+3
+ 
+This proves the relationship 
+𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3
+  for circular orbits.
+
+2. Real-World Implications
+Moon-Earth System: Measuring the Moon’s period and distance allows calculating Earth’s mass.
+
+Solar System: Astronomers determine planetary distances from the Sun using observed orbital periods.
+
+Exoplanet Discovery: Transit observations give 
+𝑇
+T, allowing estimation of 
+𝑟
+r and host star mass.
+
+3. Python Simulation: Circular Orbits and Kepler’s Law
+python
+Kopyala
+Düzenle
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 
 # Constants
-G = 6.67430e-11  # Gravitational constant (m^3 kg^-1 s^-2)
-M_sun = 1.989e30  # Sun's mass (kg)
+G = 6.67430e-11  # m^3 kg^-1 s^-2
+M = 1.989e30     # kg, mass of the Sun
 
-# Planetary data: [orbital radius (m), orbital period (s)]
-planets = {
-    "Mercury": [5.79e10, 7.60e6],
-    "Venus": [1.082e11, 1.94e7],
-    "Earth": [1.496e11, 3.156e7],
-    "Mars": [2.279e11, 5.93e7],
-    "Jupiter": [7.784e11, 3.743e8],
-    "Saturn": [1.429e12, 9.29e8]
-}
+# Radii from 0.1 AU to 30 AU
+radii_AU = np.linspace(0.1, 30, 500)
+radii_m = radii_AU * 1.496e11  # Convert AU to meters
 
-# Calculate T^2 and r^3
-r_cubed = np.array([data[0]**3 for data in planets.values()])
-T_squared = np.array([data[1]**2 for data in planets.values()])
+# Compute periods using T = 2π sqrt(r^3 / GM)
+periods_sec = 2 * np.pi * np.sqrt(radii_m**3 / (G * M))
+periods_years = periods_sec / (60 * 60 * 24 * 365.25)
 
-# Theoretical slope
-slope = 4 * np.pi**2 / (G * M_sun)
+# Verify Kepler's Law: T^2 vs r^3
+T2 = periods_years**2
+R3 = radii_AU**3
 
-# Plot T^2 vs r^3
-plt.figure(figsize=(10, 6))
-plt.scatter(r_cubed, T_squared, color='blue', label='Planets')
-plt.plot(r_cubed, slope * r_cubed, color='red', linestyle='--', label=f'Theoretical: T² = (4π²/(GM))r³')
-plt.xlabel('Orbital Radius Cubed (m³)')
-plt.ylabel('Orbital Period Squared (s²)')
-plt.title('Kepler’s Third Law: T² vs r³ for Solar System Planets')
-plt.legend()
+# Plotting
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.plot(radii_AU, periods_years)
+plt.title("Orbital Period vs Radius")
+plt.xlabel("Orbital Radius (AU)")
+plt.ylabel("Orbital Period (Years)")
 plt.grid(True)
-plt.savefig('kepler_third_law.png')
+
+plt.subplot(1, 2, 2)
+plt.plot(R3, T2, color='green')
+plt.title("Kepler's Third Law: $T^2$ vs $r^3$")
+plt.xlabel("r³ (AU³)")
+plt.ylabel("T² (Years²)")
+plt.grid(True)
+
+plt.tight_layout()
 plt.show()
+4. Discussion on Elliptical Orbits
+Kepler’s Third Law also holds for elliptical orbits when using the semi-major axis 
+𝑎
+a:
 
-# Circular Orbit Animation
-fig, ax = plt.subplots(figsize=(8, 8))
-ax.set_xlim(-1.5e12, 1.5e12)
-ax.set_ylim(-1.5e12, 1.5e12)
-ax.set_xlabel('x (m)')
-ax.set_ylabel('y (m)')
-ax.set_title('Circular Orbits of Planets')
-ax.grid(True)
+𝑇
+2
+=
+4
+𝜋
+2
+𝐺
+(
+𝑀
++
+𝑚
+)
+𝑎
+3
+T 
+2
+ = 
+G(M+m)
+4π 
+2
+ 
+​
+ a 
+3
+ 
+This is especially important for binary star systems or moons where the mass of the orbiting body isn't negligible. It also applies to artificial satellites and moons of other planets.
 
-# Plot Sun at origin
-ax.plot(0, 0, 'yo', markersize=20, label='Sun')
+5. Conclusion
+Kepler’s Third Law provides a foundational relationship in celestial mechanics. From planet discovery to calculating stellar masses, the 
+𝑇
+2
+∝
+𝑟
+3
+T 
+2
+ ∝r 
+3
+  law, rooted in Newtonian physics, is central to our understanding of orbital dynamics.
 
-# Initialize planet lines
-lines = {}
-for planet, (r, T) in planets.items():
-    lines[planet], = ax.plot([], [], 'o-', label=planet, markersize=8)
-
-def init():
-    for line in lines.values():
-        line.set_data([], [])
-    return lines.values()
-
-def animate(t):
-    for planet, (r, T) in planets.items():
-        theta = 2 * np.pi * t / T
-        x = r * np.cos(theta)
-        y = r * np.sin(theta)
-        lines[planet].set_data([x], [y])
-    return lines.values()
-
-ani = FuncAnimation(fig, animate, init_func=init, frames=1000, interval=50, blit=True)
-plt.legend()
-plt.show()
+This relationship simplifies the modeling and prediction of orbits across the universe, from our Moon to exoplanets light-years away.
