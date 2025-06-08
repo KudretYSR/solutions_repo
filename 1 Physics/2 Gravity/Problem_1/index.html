@@ -55,6 +55,8 @@
 <li class="toctree-l1 current"><a class="reference internal current">2 Gravity</a>
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
+<ul class="current">
+</ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
 </li>
@@ -169,48 +171,65 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<ol>
-<li>Derivation of the Relationship Between Period and Radius</li>
-</ol>
-<p>For a body in a circular orbit around a much larger central mass (e.g., planet around a star), we equate gravitational force and centripetal force:</p>
-<p>Gravitational Force:</p>
-<p>Centripetal Force:</p>
-<p>Equating:</p>
-<p>The orbital period  is related to the orbital speed  and the circumference:</p>
-<p>Thus, for circular orbits:</p>
-<p>This is Kepler's Third Law for circular orbits.</p>
-<ol>
-<li>Implications for Astronomy</li>
-</ol>
-<p>Mass Calculation: Knowing  and , we can rearrange Kepler's law to calculate the mass  of a central body.</p>
-<p>Distance Measurement: Knowing the period and mass, one can derive the distance (orbital radius).</p>
-<p>Predictive Tool: It's essential in predicting satellite motion and planning space missions.</p>
-<ol>
-<li>Real-World Examples</li>
-</ol>
-<p>Moon Around Earth</p>
-<p>Orbital radius:  m</p>
-<p>Orbital period:  days</p>
-<p>Planets in the Solar System</p>
-<p>Verified values of  and  show  relationship</p>
-<p>Planet</p>
-<p>Radius (AU)</p>
-<p>Period (years)</p>
-<p>Earth</p>
-<p>1.00</p>
-<p>1.00</p>
-<p>1.00</p>
-<p>1.00</p>
-<p>Mars</p>
-<p>1.52</p>
-<p>1.88</p>
-<p>3.53</p>
-<p>3.51</p>
-<p>Jupiter</p>
-<p>5.20</p>
-<p>11.86</p>
-<p>140.7</p>
-<p>140.6</p>
+<p>import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation</p>
+<h1 id="constants">Constants</h1>
+<p>G = 6.67430e-11  # Gravitational constant (m^3 kg^-1 s^-2)
+M_sun = 1.989e30  # Sun's mass (kg)</p>
+<h1 id="planetary-data-orbital-radius-m-orbital-period-s">Planetary data: [orbital radius (m), orbital period (s)]</h1>
+<p>planets = {
+    "Mercury": [5.79e10, 7.60e6],
+    "Venus": [1.082e11, 1.94e7],
+    "Earth": [1.496e11, 3.156e7],
+    "Mars": [2.279e11, 5.93e7],
+    "Jupiter": [7.784e11, 3.743e8],
+    "Saturn": [1.429e12, 9.29e8]
+}</p>
+<h1 id="calculate-t2-and-r3">Calculate T^2 and r^3</h1>
+<p>r_cubed = np.array([data[0]<strong>3 for data in planets.values()])
+T_squared = np.array([data[1]</strong>2 for data in planets.values()])</p>
+<h1 id="theoretical-slope">Theoretical slope</h1>
+<p>slope = 4 * np.pi**2 / (G * M_sun)</p>
+<h1 id="plot-t2-vs-r3">Plot T^2 vs r^3</h1>
+<p>plt.figure(figsize=(10, 6))
+plt.scatter(r_cubed, T_squared, color='blue', label='Planets')
+plt.plot(r_cubed, slope * r_cubed, color='red', linestyle='--', label=f'Theoretical: T² = (4π²/(GM))r³')
+plt.xlabel('Orbital Radius Cubed (m³)')
+plt.ylabel('Orbital Period Squared (s²)')
+plt.title('Kepler’s Third Law: T² vs r³ for Solar System Planets')
+plt.legend()
+plt.grid(True)
+plt.savefig('kepler_third_law.png')
+plt.show()</p>
+<h1 id="circular-orbit-animation">Circular Orbit Animation</h1>
+<p>fig, ax = plt.subplots(figsize=(8, 8))
+ax.set_xlim(-1.5e12, 1.5e12)
+ax.set_ylim(-1.5e12, 1.5e12)
+ax.set_xlabel('x (m)')
+ax.set_ylabel('y (m)')
+ax.set_title('Circular Orbits of Planets')
+ax.grid(True)</p>
+<h1 id="plot-sun-at-origin">Plot Sun at origin</h1>
+<p>ax.plot(0, 0, 'yo', markersize=20, label='Sun')</p>
+<h1 id="initialize-planet-lines">Initialize planet lines</h1>
+<p>lines = {}
+for planet, (r, T) in planets.items():
+    lines[planet], = ax.plot([], [], 'o-', label=planet, markersize=8)</p>
+<p>def init():
+    for line in lines.values():
+        line.set_data([], [])
+    return lines.values()</p>
+<p>def animate(t):
+    for planet, (r, T) in planets.items():
+        theta = 2 * np.pi * t / T
+        x = r * np.cos(theta)
+        y = r * np.sin(theta)
+        lines[planet].set_data([x], [y])
+    return lines.values()</p>
+<p>ani = FuncAnimation(fig, animate, init_func=init, frames=1000, interval=50, blit=True)
+plt.legend()
+plt.show()</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
