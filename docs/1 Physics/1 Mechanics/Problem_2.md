@@ -15,7 +15,7 @@
       padding: 30px;
     }
     h1, h2 {
-      color: #ffcc00;
+      color:rgb(12, 12, 11);
     }
     canvas {
       background: #222;
