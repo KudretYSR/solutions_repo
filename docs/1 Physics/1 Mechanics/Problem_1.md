@@ -1,131 +1,322 @@
 # Problem 1
- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projectile Motion: Theory & Simulation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h1, h2 {
-      color: #333;
-    }
-    canvas {
-      border: 1px solid #ccc;
-      background: white;
-      margin-top: 20px;
-    }
-    label {
-      display: inline-block;
-      margin: 10px 10px 10px 0;
-    }
-    input {
-      width: 60px;
-      margin-left: 5px;
-    }
-    button {
-      margin-top: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-    }
-    .equations {
-      background: #fff;
-      padding: 15px;
-      border-left: 5px solid #0077cc;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-    .results {
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
+ Projectile Motion Analysis
+1. Theoretical Foundation
+To derive the equations of motion, we start with Newton's second law:
 
-  <h1> Projectile Motion: Theory & Simulation</h1>
+𝐹
+⃗
+=
+𝑚
+𝑎
+⃗
+F
+ =m 
+a
+ 
+For projectile motion (ignoring air resistance), the only force acting after launch is gravity:
 
-  <div class="equations">
-    <h2> Theoretical Formulas</h2>
-    <p><strong>Horizontal position:</strong> \( x(t) = v_0 \cos(\theta) \cdot t \)</p>
-    <p><strong>Vertical position:</strong> \( y(t) = v_0 \sin(\theta) \cdot t - \frac{1}{2}gt^2 \)</p>
-    <p><strong>Time of Flight:</strong> \( t_f = \frac{2v_0 \sin(\theta)}{g} \)</p>
-    <p><strong>Range:</strong> \( R = \frac{v_0^2 \sin(2\theta)}{g} \)</p>
-    <p><strong>Max Height:</strong> \( H = \frac{(v_0 \sin(\theta))^2}{2g} \)</p>
-  </div>
+Horizontal motion: $a_x = 0$
 
-  <h2> Simulation Controls</h2>
-  <label>
-    Initial Velocity (m/s):
-    <input id="velocity" type="number" value="30" min="1" step="1">
-  </label>
-  <label>
-    Launch Angle (°):
-    <input id="angle" type="number" value="45" min="0" max="90" step="1">
-  </label>
-  <button onclick="simulate()">Simulate</button>
+Vertical motion: $a_y = -g$
 
-  <div class="results">
-    <p><strong>Range:</strong> <span id="range">--</span> m</p>
-    <p><strong>Max Height:</strong> <span id="height">--</span> m</p>
-    <p><strong>Time of Flight:</strong> <span id="time">--</span> s</p>
-  </div>
+Let the initial velocity be $v_0$ and the angle of projection be $\theta$. Then the velocity components are:
 
-  <canvas id="canvas" width="720" height="400"></canvas>
+𝑣
+0
+𝑥
+=
+𝑣
+0
+cos
+⁡
+𝜃
+,
+𝑣
+0
+𝑦
+=
+𝑣
+0
+sin
+⁡
+𝜃
+v 
+0x
+​
+ =v 
+0
+​
+ cosθ,v 
+0y
+​
+ =v 
+0
+​
+ sinθ
+The position at time $t$ is:
 
-  <script>
-    const g = 9.81;
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+Horizontal:
 
-    function simulate() {
-      const v0 = parseFloat(document.getElementById('velocity').value);
-      const angleDeg = parseFloat(document.getElementById('angle').value);
-      const angleRad = angleDeg * Math.PI / 180;
+𝑥
+(
+𝑡
+)
+=
+𝑣
+0
+𝑥
+𝑡
+=
+𝑣
+0
+cos
+⁡
+𝜃
+⋅
+𝑡
+x(t)=v 
+0x
+​
+ t=v 
+0
+​
+ cosθ⋅t
+Vertical:
 
-      const vx = v0 * Math.cos(angleRad);
-      const vy = v0 * Math.sin(angleRad);
+𝑦
+(
+𝑡
+)
+=
+𝑣
+0
+𝑦
+𝑡
+−
+1
+2
+𝑔
+𝑡
+2
+=
+𝑣
+0
+sin
+⁡
+𝜃
+⋅
+𝑡
+−
+1
+2
+𝑔
+𝑡
+2
+y(t)=v 
+0y
+​
+ t− 
+2
+1
+​
+ gt 
+2
+ =v 
+0
+​
+ sinθ⋅t− 
+2
+1
+​
+ gt 
+2
+ 
+To find the time of flight, set $y(t) = 0$:
 
-      const t_flight = (2 * vy) / g;
-      const range = vx * t_flight;
-      const h_max = (vy ** 2) / (2 * g);
+0
+=
+𝑣
+0
+sin
+⁡
+𝜃
+⋅
+𝑡
+−
+1
+2
+𝑔
+𝑡
+2
+⇒
+𝑡
+=
+2
+𝑣
+0
+sin
+⁡
+𝜃
+𝑔
+0=v 
+0
+​
+ sinθ⋅t− 
+2
+1
+​
+ gt 
+2
+ ⇒t= 
+g
+2v 
+0
+​
+ sinθ
+​
+ 
+Range ($R$) is the horizontal distance when the projectile lands:
 
-      // Output results
-      document.getElementById('range').innerText = range.toFixed(2);
-      document.getElementById('height').innerText = h_max.toFixed(2);
-      document.getElementById('time').innerText = t_flight.toFixed(2);
+𝑅
+=
+𝑥
+(
+𝑡
+)
+=
+𝑣
+0
+cos
+⁡
+𝜃
+⋅
+2
+𝑣
+0
+sin
+⁡
+𝜃
+𝑔
+=
+𝑣
+0
+2
+sin
+⁡
+(
+2
+𝜃
+)
+𝑔
+R=x(t)=v 
+0
+​
+ cosθ⋅ 
+g
+2v 
+0
+​
+ sinθ
+​
+ = 
+g
+v 
+0
+2
+​
+ sin(2θ)
+​
+ 
+Variations in Initial Conditions
+Different initial velocities or angles create a family of parabolic trajectories.
 
-      // Clear and scale canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const scaleX = canvas.width / (range * 1.1);
-      const scaleY = canvas.height / (h_max * 1.5);
+2. Analysis of the Range
+Range as a Function of Angle
+The horizontal range is:
 
-      // Draw trajectory
-      ctx.beginPath();
-      ctx.moveTo(0, canvas.height);
-      for (let t = 0; t <= t_flight; t += 0.01) {
-        const x = vx * t;
-        const y = vy * t - 0.5 * g * t * t;
-        ctx.lineTo(x * scaleX, canvas.height - y * scaleY);
-      }
-      ctx.strokeStyle = 'blue';
-      ctx.lineWidth = 2;
-      ctx.stroke();
+𝑅
+(
+𝜃
+)
+=
+𝑣
+0
+2
+sin
+⁡
+(
+2
+𝜃
+)
+𝑔
+R(θ)= 
+g
+v 
+0
+2
+​
+ sin(2θ)
+​
+ 
+Maximum range occurs when $\sin(2\theta)$ is maximum:
 
-      // Axis labels
-      ctx.fillStyle = 'black';
-      ctx.font = '12px sans-serif';
-      ctx.fillText('0 m', 2, canvas.height - 5);
-      ctx.fillText(`${range.toFixed(1)} m`, range * scaleX - 40, canvas.height - 5);
-    }
+sin
+⁡
+(
+2
+𝜃
+)
+=
+1
+⇒
+𝜃
+=
+45
+∘
+sin(2θ)=1⇒θ=45 
+∘
+ 
+Dependence on Other Parameters
+Initial velocity ($v_0$): Range is proportional to $v_0^2$
 
-    simulate(); // Run initially
-  </script>
+Gravitational acceleration ($g$): Range is inversely proportional to $g$
 
-</body>
-</html>
+3. Practical Applications
+This model can be extended to:
+
+Uneven terrain: Adjust the endpoint condition $y(t) = h$ instead of 0.
+
+Air resistance: Introduce drag forces proportional to velocity, requiring numerical integration.
+
+4. Implementation
+Python Code (with Visualization)
+python
+Copy
+Edit
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+g = 9.81  # gravity (m/s^2)
+
+def compute_range(v0, theta_deg, g=9.81):
+    theta_rad = np.radians(theta_deg)
+    return (v0**2 * np.sin(2 * theta_rad)) / g
+
+# Parameters
+v0_values = [10, 20, 30]  # m/s
+angles = np.linspace(0, 90, 300)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+for v0 in v0_values:
+    ranges = [compute_range(v0, theta) for theta in angles]
+    plt.plot(angles, ranges, label=f'$v_0 = {v0}$ m/s')
+
+plt.title('Projectile Range as a Function of Angle of Projection')
+plt.xlabel('Angle (degrees)')
+plt.ylabel('Range (meters)')
+plt.legend()
+plt.grid(True)
+plt.show()
+This code simulates the projectile motion for different initial velocities and visualizes the range as a function of launch angle.
