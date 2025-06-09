@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>Problem 1 - Physics and Mathematics</title>
+<title>Problem 2 - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "Problem 1";
+        var mkdocs_page_name = "Problem 2";
         var mkdocs_page_input_path = "1 Physics/2 Gravity/Problem_1.md";
         var mkdocs_page_url = null;
       </script>
@@ -54,8 +54,28 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal current">2 Gravity</a>
 <ul class="current">
-<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#orbital-period-vs-radius-keplers-third-law">Orbital Period vs Radius: Kepler's Third Law</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-theoretical-derivation">1. Theoretical Derivation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#derivation">Derivation:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-astronomical-implications">2. Astronomical Implications</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-real-world-examples">3. Real-World Examples</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-1-the-moon">Example 1: The Moon</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#example-2-planets-in-the-solar-system">Example 2: Planets in the Solar System</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-python-simulation-orbital-period-vs-radius">4. Python Simulation: Orbital Period vs Radius</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
@@ -163,7 +183,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">2 Gravity</li>
-<li class="breadcrumb-item active">Problem 1</li>
+<li class="breadcrumb-item active">Problem 2</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -171,43 +191,143 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<p>import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation</p>
-<h1 id="sabitler">Sabitler</h1>
-<p>G = 6.67430e-11  # Evrensel çekim sabiti (m^3/kg/s^2)
-M_sun = 1.989e30  # Güneş'in kütlesi (kg)
-AU = 1.496e11  # 1 Astronomik Birim (m)</p>
-<h1 id="yorunge-yarcap-ve-periyot">Yörünge yarıçapı ve periyot</h1>
-<p>r = 1 * AU  # 1 AU'da dairesel yörünge
-T = 2 * np.pi * np.sqrt(r**3 / (G * M_sun))  # Periyot (s)</p>
-<h1 id="zaman-dizisi">Zaman dizisi</h1>
-<p>num_frames = 300
-times = np.linspace(0, T, num_frames)</p>
-<h1 id="yorunge-uzerindeki-konumlar">Yörünge üzerindeki konumlar</h1>
-<p>theta = 2 * np.pi * times / T
-x = r * np.cos(theta)
-y = r * np.sin(theta)</p>
-<h1 id="grafik-hazrlg">Grafik hazırlığı</h1>
-<p>fig, ax = plt.subplots(figsize=(6, 6))
-ax.set_xlim(-1.2 * r, 1.2 * r)
-ax.set_ylim(-1.2 * r, 1.2 * r)
-ax.set_aspect('equal')
-ax.set_title("Dairesel Yörünge Simülasyonu (1 AU)")
-planet, = ax.plot([], [], 'bo', label="Gezegen")
-sun = ax.plot(0, 0, 'yo', markersize=12, label="Güneş")</p>
-<h1 id="baslangc-fonksiyonu">Başlangıç fonksiyonu</h1>
-<p>def init():
-    planet.set_data([], [])
-    return planet,</p>
-<h1 id="guncelleme-fonksiyonu">Güncelleme fonksiyonu</h1>
-<p>def update(frame):
-    planet.set_data(x[frame], y[frame])
-    return planet,</p>
-<h1 id="animasyon-olusturma">Animasyon oluşturma</h1>
-<p>ani = FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True)</p>
-<p>plt.legend()
-plt.show()</p>
+<h1 id="problem-2">Problem 2</h1>
+<h2 id="orbital-period-vs-radius-keplers-third-law">Orbital Period vs Radius: Kepler's Third Law</h2>
+<hr/>
+<h2 id="1-theoretical-derivation">1. Theoretical Derivation</h2>
+<p>Kepler’s Third Law establishes a powerful relationship in orbital mechanics: for a body in a circular orbit, the square of its orbital period <span class="arithmatex">\(T\)</span> is proportional to the cube of the orbital radius <span class="arithmatex">\(r\)</span>. This can be derived using Newton’s Law of Universal Gravitation and the formula for centripetal force.</p>
+<h3 id="derivation">Derivation:</h3>
+<p>Gravitational force equals centripetal force:</p>
+<div class="arithmatex">\[
+\frac{G M m}{r^2} = \frac{m v^2}{r}
+\]</div>
+<p>Simplify:</p>
+<div class="arithmatex">\[
+v = \sqrt{\frac{G M}{r}}
+\]</div>
+<p>Orbital period <span class="arithmatex">\(T\)</span> is:</p>
+<div class="arithmatex">\[
+T = \frac{2\pi r}{v} = 2\pi \sqrt{\frac{r^3}{G M}}
+\]</div>
+<p>Squaring both sides:</p>
+<div class="arithmatex">\[
+T^2 = \frac{4\pi^2}{G M} \cdot r^3
+\]</div>
+<p>Thus:</p>
+<div class="arithmatex">\[
+T^2 \propto r^3
+\]</div>
+<hr/>
+<h2 id="2-astronomical-implications">2. Astronomical Implications</h2>
+<p>This relationship is crucial in astronomy for:</p>
+<ul>
+<li>Calculating the <strong>mass of central bodies</strong> (e.g., planets, stars).</li>
+<li>Determining <strong>orbital distances</strong> of celestial bodies.</li>
+<li>Understanding the <strong>architecture of planetary systems</strong>.</li>
+</ul>
+<p>Because the constant:</p>
+<div class="arithmatex">\[
+\frac{4\pi^2}{GM}
+\]</div>
+<p>depends only on the central mass <span class="arithmatex">\(M\)</span>, this proportionality holds for all bodies orbiting the same object.</p>
+<hr/>
+<h2 id="3-real-world-examples">3. Real-World Examples</h2>
+<h3 id="example-1-the-moon">Example 1: The Moon</h3>
+<ul>
+<li>Orbital radius: <span class="arithmatex">\(\sim 384,400\)</span> km  </li>
+<li>Orbital period: <span class="arithmatex">\(\sim 27.3\)</span> days</li>
+</ul>
+<div class="arithmatex">\[
+T^2 = (27.3)^2 = 745.29
+\]</div>
+<h3 id="example-2-planets-in-the-solar-system">Example 2: Planets in the Solar System</h3>
+<table>
+<thead>
+<tr>
+<th>Planet</th>
+<th>Radius (AU)</th>
+<th>Period (years)</th>
+<th><span class="arithmatex">\(T^2 / r^3\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Earth</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+</tr>
+<tr>
+<td>Mars</td>
+<td>1.52</td>
+<td>1.88</td>
+<td><span class="arithmatex">\(\sim 1.00\)</span></td>
+</tr>
+<tr>
+<td>Jupiter</td>
+<td>5.20</td>
+<td>11.86</td>
+<td><span class="arithmatex">\(\sim 1.00\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The ratio <span class="arithmatex">\(T^2 / r^3\)</span> remains approximately constant.</p>
+<hr/>
+<h2 id="4-python-simulation-orbital-period-vs-radius">4. Python Simulation: Orbital Period vs Radius</h2>
+<p>```python
+import numpy as np
+import plotly.graph_objects as go</p>
+<h1 id="constants">Constants</h1>
+<p>G = 6.67430e-11  # gravitational constant [m^3/kg/s^2]
+M = 5.972e24     # mass of Earth [kg]</p>
+<h1 id="orbital-radii-in-meters">Orbital radii (in meters)</h1>
+<p>radii = np.linspace(7e6, 5e8, 500)
+periods = 2 * np.pi * np.sqrt(radii**3 / (G * M))  # seconds</p>
+<h1 id="convert-to-readable-units">Convert to readable units</h1>
+<p>radii_km = radii / 1e3
+periods_hr = periods / 3600</p>
+<h1 id="plot-t-vs-r">Plot T vs r</h1>
+<p>fig1 = go.Figure()
+fig1.add_trace(go.Scatter(x=radii_km, y=periods_hr, mode='lines', name='T vs r'))
+fig1.update_layout(title='Orbital Period vs Radius',
+                   xaxis_title='Radius (km)',
+                   yaxis_title='Period (hours)',
+                   template='plotly_white')</p>
+<h1 id="plot-t2-vs-r3">Plot T^2 vs r^3</h1>
+<p>fig2 = go.Figure()
+fig2.add_trace(go.Scatter(x=radii<strong>3, y=periods</strong>2, mode='lines', name='T² vs r³'))
+fig2.update_layout(title='T² vs r³ - Verifying Kepler\'s Law',
+                   xaxis_title='Radius³ (m³)',
+                   yaxis_title='Period² (s²)',
+                   template='plotly_white')</p>
+<p>fig1.show()
+fig2.show()
+5. Elliptical Orbits Extension
+Kepler's Third Law also holds for elliptical orbits using the semi-major axis <span class="arithmatex">\(a\)</span>:</p>
+<p>𝑇
+2
+=
+4
+𝜋
+2
+𝐺
+𝑀
+⋅
+𝑎
+3
+T 
+2
+ = 
+GM
+4π 
+2</p>
+<p>​
+ ⋅a 
+3</p>
+<p>This generalization applies to:</p>
+<p>Comets</p>
+<p>Binary star systems</p>
+<p>Satellites with elliptical paths</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
