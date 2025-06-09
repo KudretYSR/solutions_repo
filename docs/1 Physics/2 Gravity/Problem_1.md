@@ -1,46 +1,153 @@
+# Problem 2  
+## Orbital Period vs Radius: Kepler's Third Law
+
+---
+
+## 1. Theoretical Derivation
+
+Kepler’s Third Law establishes a powerful relationship in orbital mechanics: for a body in a circular orbit, the square of its orbital period $T$ is proportional to the cube of the orbital radius $r$. This can be derived using Newton’s Law of Universal Gravitation and the formula for centripetal force.
+
+### Derivation:
+
+Gravitational force equals centripetal force:
+
+$$
+\frac{G M m}{r^2} = \frac{m v^2}{r}
+$$
+
+Simplify:
+
+$$
+v = \sqrt{\frac{G M}{r}}
+$$
+
+Orbital period $T$ is:
+
+$$
+T = \frac{2\pi r}{v} = 2\pi \sqrt{\frac{r^3}{G M}}
+$$
+
+Squaring both sides:
+
+$$
+T^2 = \frac{4\pi^2}{G M} \cdot r^3
+$$
+
+Thus:
+
+$$
+T^2 \propto r^3
+$$
+
+---
+
+## 2. Astronomical Implications
+
+This relationship is crucial in astronomy for:
+
+- Calculating the **mass of central bodies** (e.g., planets, stars).
+- Determining **orbital distances** of celestial bodies.
+- Understanding the **architecture of planetary systems**.
+
+Because the constant:
+
+$$
+\frac{4\pi^2}{GM}
+$$
+
+depends only on the central mass $M$, this proportionality holds for all bodies orbiting the same object.
+
+---
+
+## 3. Real-World Examples
+
+### Example 1: The Moon
+
+- Orbital radius: $\sim 384,400$ km  
+- Orbital period: $\sim 27.3$ days
+
+$$
+T^2 = (27.3)^2 = 745.29
+$$
+
+### Example 2: Planets in the Solar System
+
+| Planet | Radius (AU) | Period (years) | $T^2 / r^3$ |
+|--------|--------------|----------------|-------------|
+| Earth  | 1.00         | 1.00           | 1.00        |
+| Mars   | 1.52         | 1.88           | $\sim 1.00$ |
+| Jupiter| 5.20         | 11.86          | $\sim 1.00$ |
+
+The ratio $T^2 / r^3$ remains approximately constant.
+
+---
+
+## 4. Python Simulation: Orbital Period vs Radius
+
+```python
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import plotly.graph_objects as go
 
-# Sabitler
-G = 6.67430e-11  # Evrensel çekim sabiti (m^3/kg/s^2)
-M_sun = 1.989e30  # Güneş'in kütlesi (kg)
-AU = 1.496e11  # 1 Astronomik Birim (m)
+# Constants
+G = 6.67430e-11  # gravitational constant [m^3/kg/s^2]
+M = 5.972e24     # mass of Earth [kg]
 
-# Yörünge yarıçapı ve periyot
-r = 1 * AU  # 1 AU'da dairesel yörünge
-T = 2 * np.pi * np.sqrt(r**3 / (G * M_sun))  # Periyot (s)
+# Orbital radii (in meters)
+radii = np.linspace(7e6, 5e8, 500)
+periods = 2 * np.pi * np.sqrt(radii**3 / (G * M))  # seconds
 
-# Zaman dizisi
-num_frames = 300
-times = np.linspace(0, T, num_frames)
+# Convert to readable units
+radii_km = radii / 1e3
+periods_hr = periods / 3600
 
-# Yörünge üzerindeki konumlar
-theta = 2 * np.pi * times / T
-x = r * np.cos(theta)
-y = r * np.sin(theta)
+# Plot T vs r
+fig1 = go.Figure()
+fig1.add_trace(go.Scatter(x=radii_km, y=periods_hr, mode='lines', name='T vs r'))
+fig1.update_layout(title='Orbital Period vs Radius',
+                   xaxis_title='Radius (km)',
+                   yaxis_title='Period (hours)',
+                   template='plotly_white')
 
-# Grafik hazırlığı
-fig, ax = plt.subplots(figsize=(6, 6))
-ax.set_xlim(-1.2 * r, 1.2 * r)
-ax.set_ylim(-1.2 * r, 1.2 * r)
-ax.set_aspect('equal')
-ax.set_title("Dairesel Yörünge Simülasyonu (1 AU)")
-planet, = ax.plot([], [], 'bo', label="Gezegen")
-sun = ax.plot(0, 0, 'yo', markersize=12, label="Güneş")
+# Plot T^2 vs r^3
+fig2 = go.Figure()
+fig2.add_trace(go.Scatter(x=radii**3, y=periods**2, mode='lines', name='T² vs r³'))
+fig2.update_layout(title='T² vs r³ - Verifying Kepler\'s Law',
+                   xaxis_title='Radius³ (m³)',
+                   yaxis_title='Period² (s²)',
+                   template='plotly_white')
 
-# Başlangıç fonksiyonu
-def init():
-    planet.set_data([], [])
-    return planet,
+fig1.show()
+fig2.show()
+5. Elliptical Orbits Extension
+Kepler's Third Law also holds for elliptical orbits using the semi-major axis $a$:
 
-# Güncelleme fonksiyonu
-def update(frame):
-    planet.set_data(x[frame], y[frame])
-    return planet,
+𝑇
+2
+=
+4
+𝜋
+2
+𝐺
+𝑀
+⋅
+𝑎
+3
+T 
+2
+ = 
+GM
+4π 
+2
+ 
+​
+ ⋅a 
+3
+ 
+This generalization applies to:
 
-# Animasyon oluşturma
-ani = FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True)
+Comets
 
-plt.legend()
-plt.show()
+Binary star systems
+
+Satellites with elliptical paths
+
