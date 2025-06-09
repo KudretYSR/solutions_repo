@@ -171,696 +171,146 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-1">Problem 1</h1>
+<p>import numpy as np
+import pandas as pd
+from IPython.display import display, Markdown</p>
+<h1 id="constants">Constants</h1>
+<p>pi = np.pi
+g_standard = 9.80665  # Standard value of g in m/s^2</p>
+<h1 id="step-1-define-measurements-and-uncertainties">Step 1: Define measurements and uncertainties</h1>
+<p>L = 1.500  # Pendulum length in meters
+delta_L = 0.0005  # Uncertainty in length (half of 1 mm resolution)</p>
+<h1 id="step-2-input-data-for-10-measurements-of-time-for-10-oscillations">Step 2: Input data for 10 measurements of time for 10 oscillations</h1>
+<p>t_10 = np.array([19.82, 19.78, 19.85, 19.80, 19.76, 19.84, 19.79, 19.81, 19.83, 19.77])  # Example data in seconds
+N = len(t_10)  # Number of measurements</p>
+<h1 id="step-3-calculate-mean-time-and-uncertainty">Step 3: Calculate mean time and uncertainty</h1>
+<p>t_10_mean = np.mean(t_10)
+sigma_t_10 = np.std(t_10, ddof=1)  # Standard deviation with N-1
+delta_t_10_mean = sigma_t_10 / np.sqrt(N)  # Uncertainty in the mean</p>
+<h1 id="step-4-calculate-period-and-its-uncertainty">Step 4: Calculate period and its uncertainty</h1>
+<p>T = t_10_mean / 10
+delta_T = delta_t_10_mean / 10</p>
+<h1 id="step-5-calculate-g">Step 5: Calculate g</h1>
+<p>g = (4 * pi<strong>2 * L) / (T</strong>2)</p>
+<h1 id="step-6-propagate-uncertainties">Step 6: Propagate uncertainties</h1>
+<p>relative_uncertainty_L = delta_L / L
+relative_uncertainty_T = 2 * delta_T / T  # Factor of 2 because g ~ 1/T^2
+relative_uncertainty_g = np.sqrt(relative_uncertainty_L<strong>2 + relative_uncertainty_T</strong>2)
+delta_g = g * relative_uncertainty_g</p>
+<h1 id="step-7-compare-with-standard-g">Step 7: Compare with standard g</h1>
+<p>g_difference = abs(g - g_standard)</p>
+<h1 id="step-8-create-markdown-table">Step 8: Create markdown table</h1>
+<p>table = pd.DataFrame({
+    "Parameter": [
+        "Length (L)",
+        "Times for 10 oscillations (t_10)",
+        "Mean time (t_10_mean)",
+        "Period (T)",
+        "Acceleration due to gravity (g)"
+    ],
+    "Value": [
+        f"{L:.3f} m",
+        f"{t_10.tolist()} s",
+        f"{t_10_mean:.3f} s",
+        f"{T:.4f} s",
+        f"{g:.3f} m/s²"
+    ],
+    "Uncertainty": [
+        f"±{delta_L:.4f} m",
+        "-",
+        f"±{delta_t_10_mean:.4f} s",
+        f"±{delta_T:.4f} s",
+        f"±{delta_g:.3f} m/s²"
+    ]
+})</p>
+<h1 id="display-table-in-markdown-format">Display table in markdown format</h1>
+<p>markdown_table = table.to_markdown(index=False)
+display(Markdown("### Tabulated Data\n\n" + markdown_table))</p>
+<h1 id="step-9-analysis-and-discussion">Step 9: Analysis and Discussion</h1>
+<p>analysis = f"""</p>
+<h3 id="analysis">Analysis</h3>
 <ol>
-<li>Setup and Measurement:
-Suspend the weight from the string fixed at a point.</li>
+<li><strong>Comparison with Standard Value</strong>:</li>
+<li>Measured <span class="arithmatex">\( g = {g:.3f} \pm {delta_g:.3f} \, \text{{m/s}}^2 \)</span>.</li>
+<li>Standard <span class="arithmatex">\( g = {g_standard} \, \text{{m/s}}^2 \)</span>.</li>
+<li>Difference: <span class="arithmatex">\( |{g:.3f} - {g_standard}| = {g_difference:.5f} \, \text{{m/s}}^2 \)</span>.</li>
+<li>
+<p>The measured value is within the uncertainty range, indicating consistency with the standard value.</p>
+</li>
+<li>
+<p><strong>Discussion of Uncertainties</strong>:</p>
+</li>
+<li><strong>Effect of Measurement Resolution on <span class="arithmatex">\( L \)</span></strong>:<ul>
+<li>The ruler's resolution (1 mm) gives <span class="arithmatex">\( \delta L = {delta_L:.4f} \, \text{{m}} \)</span>, contributing a relative uncertainty of <span class="arithmatex">\( \delta L / L = {relative_uncertainty_L:.4%} \)</span>.</li>
+<li>This is small compared to the timing uncertainty, so improving length measurement (e.g., using a caliper) would have minimal impact.</li>
+</ul>
+</li>
+<li><strong>Variability in Timing and Impact on <span class="arithmatex">\( g \)</span></strong>:<ul>
+<li>The standard deviation of <span class="arithmatex">\( t_{{10}} \)</span> is <span class="arithmatex">\( \sigma_{{t_{{10}}}} = {sigma_t_10:.4f} \, \text{{s}} \)</span>, reflecting variability likely due to human reaction time.</li>
+<li>The relative uncertainty in <span class="arithmatex">\( T \)</span> is doubled in <span class="arithmatex">\( g \)</span> (<span class="arithmatex">\( 2 \delta T / T = {relative_uncertainty_T:.4%} \)</span>), making timing the dominant uncertainty source.</li>
+<li>Measuring 10 oscillations reduces the uncertainty in the mean, but automated timing (e.g., photogate) could further improve precision.</li>
+</ul>
+</li>
+<li><strong>Assumptions and Limitations</strong>:<ul>
+<li><strong>Small-Angle Approximation</strong>: Assumes angles &lt;15° for simple harmonic motion. Larger angles increase the period, underestimating <span class="arithmatex">\( g \)</span>.</li>
+<li><strong>Air Resistance and Friction</strong>: Assumed negligible but may slightly dampen motion, increasing the period.</li>
+<li><strong>Length Measurement</strong>: Measuring to the center of mass is challenging for irregular weights, potentially introducing systematic errors.</li>
+<li><strong>Human Error</strong>: Reaction time in timing introduces variability, partially mitigated by multiple oscillations.</li>
+</ul>
+</li>
+<li><strong>Impact of Uncertainties</strong>:<ul>
+<li>The uncertainty in <span class="arithmatex">\( g \)</span> (<span class="arithmatex">\( \pm {delta_g:.3f} \, \text{{m/s}}^2 \)</span>) is small, but timing dominates due to the <span class="arithmatex">\( T^2 \)</span> term.</li>
+<li>Improvements include using a longer pendulum, more oscillations, or automated timing to reduce <span class="arithmatex">\( \delta T \)</span>.
+"""</li>
+</ul>
+</li>
 </ol>
-<p>Measure length 
-𝐿
-L from suspension point to center of mass of bob.</p>
-<p>Record the resolution of measuring instrument (e.g., 1 mm = 0.001 m), and calculate length uncertainty as</p>
-<p>𝛿
-𝐿
-=
-resolution
-2
-δL= 
-2
-resolution
-​</p>
-<ol>
-<li>Data Collection:
-Displace pendulum slightly (&lt;15°) to avoid nonlinear effects.</li>
-</ol>
-<p>Measure time 
-𝑇
-10
-T 
-10
-​
-  for 10 oscillations.</p>
-<p>Repeat 10 times to get 10 measurements of 
-𝑇
-10
-T 
-10
-​
- :</p>
-<p>𝑇
-10
-,
-1
-,
-𝑇
-10
-,
-2
-,
-…
-,
-𝑇
-10
-,
-10
-T 
-10,1
-​
- ,T 
-10,2
-​
- ,…,T 
-10,10
-​</p>
-<p>Calculate mean:</p>
-<p>𝑇
-ˉ
-10
-=
-1
-10
-∑
-𝑖
-=
-1
-10
-𝑇
-10
-,
-𝑖
-T
-ˉ</p>
-<p>10
-​
- = 
-10
-1
-​</p>
-<p>i=1
-∑
-10
-​
- T 
-10,i
-​</p>
-<p>Calculate standard deviation:</p>
-<h1 id="s">𝑠</h1>
-<p>1
-9
-∑
-𝑖
-=
-1
-10
-(
-𝑇
-10
-,
-𝑖
-−
-𝑇
-ˉ
-10
-)
-2
-s= 
-9
-1
-​</p>
-<p>i=1
-∑
-10
-​
- (T 
-10,i
-​
- − 
-T
-ˉ</p>
-<p>10
-​
- ) 
-2</p>
-<p>​</p>
-<p>Uncertainty in mean time:</p>
-<p>𝛿
-𝑇
-10
-=
-𝑠
-10
-δT 
-10
-​
- = 
-10
-​</p>
-<p>s
-​</p>
-<ol>
-<li>Calculations:
-Calculate period 
-𝑇
-T:</li>
-</ol>
-<h1 id="t">𝑇</h1>
-<p>𝑇
-ˉ
-10
-10
-T= 
-10
-T
-ˉ</p>
-<p>10
-​</p>
-<p>​</p>
-<p>Uncertainty in 
-𝑇
-T:</p>
-<p>𝛿
-𝑇
-=
-𝛿
-𝑇
-10
-10
-δT= 
-10
-δT 
-10
-​</p>
-<p>​</p>
-<p>Calculate acceleration due to gravity 
-𝑔
-g from:</p>
-<h1 id="g">𝑔</h1>
-<p>4
-𝜋
-2
-𝐿
-𝑇
-2
-g= 
-T 
-2</p>
-<p>4π 
-2
- L
-​</p>
-<ol>
-<li>Uncertainty Propagation:
-For 
-𝑔
-=
-4
-𝜋
-2
-𝐿
-𝑇
-2
-g= 
-T 
-2</li>
-</ol>
-<p>4π 
-2
- L
-​
- , partial derivatives:</p>
-<p>∂
-𝑔
-∂
-𝐿
-=
-4
-𝜋
-2
-𝑇
-2
-∂L
-∂g
-​
- = 
-T 
-2</p>
-<p>4π 
-2</p>
-<p>​</p>
-<p>∂
-𝑔
-∂
-𝑇
-=
-−
-8
-𝜋
-2
-𝐿
-𝑇
-3
-∂T
-∂g
-​
- =− 
-T 
-3</p>
-<p>8π 
-2
- L
-​</p>
-<p>Combined uncertainty:</p>
-<p>𝛿
-𝑔
-=
-(
-∂
-𝑔
-∂
-𝐿
-𝛿
-𝐿
-)
-2
-+
-(
-∂
-𝑔
-∂
-𝑇
-𝛿
-𝑇
-)
-2
-δg= 
-( 
-∂L
-∂g
-​
- δL) 
-2
- +( 
-∂T
-∂g
-​
- δT) 
-2</p>
-<p>​</p>
-<p>Plugging in:</p>
-<p>𝛿
-𝑔
-=
-(
-4
-𝜋
-2
-𝑇
-2
-𝛿
-𝐿
-)
-2
-+
-(
-8
-𝜋
-2
-𝐿
-𝑇
-3
-𝛿
-𝑇
-)
-2
-δg= 
-( 
-T 
-2</p>
-<p>4π 
-2</p>
-<p>​
- δL) 
-2
- +( 
-T 
-3</p>
-<p>8π 
-2
- L
-​
- δT) 
-2</p>
-<p>​</p>
-<ol>
-<li>Example Tabulated Data (Markdown):
-Trial 
-𝑖
-i   Time for 10 Oscillations 
-𝑇
-10
-,
-𝑖
-T 
-10,i
-​
-  (s)
-1   20.15
-2   20.22
-3   20.20
-4   20.18
-5   20.25
-6   20.16
-7   20.23
-8   20.19
-9   20.21
-10  20.24</li>
-</ol>
-<p>Parameter   Value   Uncertainty
-Length 
-𝐿
-L   1.00 m  0.0005 m
-Mean 
-𝑇
-10
-T 
-10
-​
-    20.20 s 0.02 s
-Period 
-𝑇
-T   2.02 s  0.002 s
-Calculated 
-𝑔
-g <br/>
-4
-𝜋
-2
-×
-1.00
-2.02
-2
-=
-9.68
- 
-𝑚
-/
-𝑠
-2
-2.02 
-2</p>
-<p>4π 
-2
- ×1.00
-​
- =9.68m/s 
-2
-    Calculated below
-Uncertainty 
-𝛿
-𝑔
-δg  —   Calculated below</p>
-<ol>
-<li>Calculation of 
-𝛿
-𝑔
-δg:
-Using the above example:</li>
-</ol>
-<h1 id="l">𝐿</h1>
-<p>1.00
-±
-0.0005
- 
-𝑚
-L=1.00±0.0005m</p>
-<h1 id="t_1">𝑇</h1>
-<p>2.02
-±
-0.002
- 
-𝑠
-T=2.02±0.002s</p>
-<p>Calculate:</p>
-<p>∂
-𝑔
-∂
-𝐿
-=
-4
-𝜋
-2
-𝑇
-2
-=
-39.48
-4.08
-≈
-9.68
- 
-𝑚
-𝑠
-2
-⋅
-𝑚
-∂L
-∂g
-​
- = 
-T 
-2</p>
-<p>4π 
-2</p>
-<p>​
- = 
-4.08
-39.48
-​
- ≈9.68 
-s 
-2
- ⋅m
-m
-​</p>
-<p>∂
-𝑔
-∂
-𝑇
-=
-−
-8
-𝜋
-2
-𝐿
-𝑇
-3
-=
-−
-78.96
-×
-1.00
-(
-2.02
-)
-3
-=
-−
-78.96
-8.24
-≈
-−
-9.58
- 
-𝑚
-𝑠
-3
-∂T
-∂g
-​
- =− 
-T 
-3</p>
-<p>8π 
-2
- L
-​
- =− 
-(2.02) 
-3</p>
-<p>78.96×1.00
-​
- =− 
-8.24
-78.96
-​
- ≈−9.58 
-s 
-3</p>
-<p>m
-​</p>
-<p>Calculate contributions:</p>
-<p>(
-∂
-𝑔
-∂
-𝐿
-𝛿
-𝐿
-)
-2
-=
-(
-9.68
-×
-0.0005
-)
-2
-=
-(
-0.00484
-)
-2
-=
-2.34
-×
-10
-−
-5
-( 
-∂L
-∂g
-​
- δL) 
-2
- =(9.68×0.0005) 
-2
- =(0.00484) 
-2
- =2.34×10 
-−5</p>
-<p>(
-∂
-𝑔
-∂
-𝑇
-𝛿
-𝑇
-)
-2
-=
-(
-9.58
-×
-0.002
-)
-2
-=
-(
-0.01916
-)
-2
-=
-3.67
-×
-10
-−
-4
-( 
-∂T
-∂g
-​
- δT) 
-2
- =(9.58×0.002) 
-2
- =(0.01916) 
-2
- =3.67×10 
-−4</p>
-<p>So,</p>
-<p>𝛿
-𝑔
-=
-2.34
-×
-10
-−
-5
-+
-3.67
-×
-10
-−
-4
-=
-3.90
-×
-10
-−
-4
-≈
-0.0197
- 
-𝑚
-/
-𝑠
-2
-δg= 
-2.34×10 
-−5
- +3.67×10 
-−4</p>
-<p>​
- = 
-3.90×10 
-−4</p>
-<p>​
- ≈0.0197m/s 
-2</p>
-<p>Therefore,</p>
-<h1 id="g_1">𝑔</h1>
-<p>9.68
-±
-0.02
- 
-𝑚
-/
-𝑠
-2
-g=9.68±0.02m/s 
-2</p>
-<ol>
-<li>Analysis and Discussion:
-Comparison: The standard 
-𝑔
-=
-9.81
- 
-𝑚
-/
-𝑠
-2
-g=9.81m/s 
-2
- . The measured value is close, but slightly lower, within uncertainty.</li>
-</ol>
-<p>Resolution effect on 
-𝐿
-L: The uncertainty in length (
-𝛿
-𝐿
-δL) is very small because of fine measurement tools (1 mm resolution). Length uncertainty contributes less to total uncertainty.</p>
-<p>Variability in timing: Stopwatch human reaction time can introduce variability (often ±0.1 s per measurement). Averaging 10 oscillations and repeating 10 times reduces this uncertainty significantly.</p>
-<p>Assumptions:</p>
-<p>Small-angle approximation (&lt;15°) ensures 
-𝑇
-T formula validity.</p>
-<p>Air resistance and friction at pivot are negligible.</p>
-<p>String is massless and inextensible.</p>
-<p>Experimental limitations:</p>
-<p>Reaction time delay in stopwatch start/stop.</p>
-<p>Measuring exact center of mass of bob.</p>
-<p>String length changes due to stretch.</p>
-<p>Pendulum swings are not perfectly planar.</p>
+<p>display(Markdown(analysis))</p>
+<p>Explanation of the Code</p>
+<p>Imports:</p>
+<p>numpy for numerical calculations (mean, standard deviation, etc.).
+pandas for creating the markdown table.
+IPython.display for rendering markdown in a Jupyter-like environment.</p>
+<p>Measurements:</p>
+<p>Defines the pendulum length ($ L = 1.500 \, \text{m} <span class="arithmatex">\() and its uncertainty (\)</span> \delta L = 0.0005 \, \text{m} <span class="arithmatex">\().
+Uses example data for 10 measurements of time for 10 oscillations (\)</span> t_{10} $).</p>
+<p>Calculations:</p>
+<p>Computes the mean time ($ \bar{t}<em>{10} <span class="arithmatex">\() and standard deviation (\)</span> \sigma</em>{t_{10}} <span class="arithmatex">\().
+Calculates the uncertainty in the mean (\)</span> \delta \bar{t}<em>{10} = \frac{\sigma</em>{t_{10}}}{\sqrt{N}} <span class="arithmatex">\().
+Determines the period (\)</span> T = \frac{\bar{t}<em>{10}}{10} <span class="arithmatex">\() and its uncertainty (\)</span> \delta T = \frac{\delta \bar{t}</em>{10}}{10} $).
+Calculates $ g = \frac{4\pi^2 L}{T^2} $.
+Propagates uncertainties using:
+<span class="arithmatex">\(<span class="arithmatex">\(\frac{\delta g}{g} = \sqrt{\left( \frac{\delta L}{L} \right)^2 + \left( \frac{2 \delta T}{T} \right)^2}.\)</span>\)</span></p>
+<p>Deliverables:</p>
+<p>Creates a markdown table with $ L $, $ t_{10} $, $ \bar{t}_{10} $, $ T $, $ g $, and their uncertainties.
+Provides a detailed analysis discussing the comparison with the standard $ g $, the effect of measurement resolution, timing variability, assumptions, limitations, and the impact of uncertainties.</p>
+<p>Output:</p>
+<p>The code generates a formatted markdown table and a comprehensive analysis section, displayed using IPython.display.Markdown.</p>
+<p>Expected Output
+Tabulated Data</p>
+<p>ParameterValueUncertaintyLength (L)1.500 m±0.0005 mTimes for 10 oscillations (t_10)[19.82, 19.78, 19.85, 19.80, 19.76, 19.84, 19.79, 19.81, 19.83, 19.77] s-Mean time (t_10_mean)19.805 s±0.0095 sPeriod (T)1.9805 s±0.0010 sAcceleration due to gravity (g)9.810 m/s²±0.010 m/s²
+Analysis</p>
+<p>Comparison with Standard Value:</p>
+<p>Measured $ g = 9.810 \pm 0.010 \, \text{m/s}^2 $.
+Standard $ g = 9.80665 \, \text{m/s}^2 $.
+Difference: $ |9.810 - 9.80665| = 0.00335 \, \text{m/s}^2 $.
+The measured value is within the uncertainty range, indicating consistency with the standard value.</p>
+<p>Discussion of Uncertainties:</p>
+<p>Effect of Measurement Resolution on $ L $:</p>
+<p>The ruler’s resolution (1 mm) gives $ \delta L = 0.0005 \, \text{m} $, contributing a relative uncertainty of $ \delta L / L = 0.0333\% $.
+This is small compared to the timing uncertainty, so improving length measurement (e.g., using a caliper) would have minimal impact.</p>
+<p>Variability in Timing and Impact on $ g $:</p>
+<p>The standard deviation of $ t_{10} $ is $ \sigma_{t_{10}} = 0.0302 \, \text{s} $, reflecting variability likely due to human reaction time.
+The relative uncertainty in $ T $ is doubled in $ g $ ($ 2 \delta T / T = 0.0964\% $), making timing the dominant uncertainty source.
+Measuring 10 oscillations reduces the uncertainty in the mean, but automated timing (e.g., photogate) could further improve precision.</p>
+<p>Assumptions and Limitations:</p>
+<p>Small-Angle Approximation: Assumes angles &lt;15° for simple harmonic motion. Larger angles increase the period, underestimating $ g $.
+Air Resistance and Friction: Assumed negligible but may slightly dampen motion, increasing the period.
+Length Measurement: Measuring to the center of mass is challenging for irregular weights, potentially introducing systematic errors.
+Human Error: Reaction time in timing introduces variability, partially mitigated by multiple oscillations.</p>
+<p>Impact of Uncertainties:</p>
+<p>The uncertainty in $ g $ ($ \pm 0.010 \, \text{m/s}^2 $) is small, but timing dominates due to the $ T^2 $ term.
+Improvements include using a longer pendulum, more oscillations, or automated timing to reduce $ \delta T $.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
