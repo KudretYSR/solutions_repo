@@ -81,7 +81,6 @@ $$
 The ratio $T^2 / r^3$ remains approximately constant.
 
 ---
-
 ## 4. Python Simulation: Orbital Period vs Radius
 
 ```python
@@ -118,36 +117,3 @@ fig2.update_layout(title='T² vs r³ - Verifying Kepler\'s Law',
 
 fig1.show()
 fig2.show()
-5. Elliptical Orbits Extension
-Kepler's Third Law also holds for elliptical orbits using the semi-major axis $a$:
-
-𝑇
-2
-=
-4
-𝜋
-2
-𝐺
-𝑀
-⋅
-𝑎
-3
-T 
-2
- = 
-GM
-4π 
-2
- 
-​
- ⋅a 
-3
- 
-This generalization applies to:
-
-Comets
-
-Binary star systems
-
-Satellites with elliptical paths
-
