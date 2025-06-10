@@ -1,162 +1,68 @@
-1. Theoretical Foundati
-The Central Limit Theorem (CL states tnormal distr, a
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Central Limit Theorem Simulation</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h2>Central Limit Theorem: Sampling Distribution of the Mean</h2>
+    <label for="distribution">Choose Population Distribution:</label>
+    <select id="distribution">
+        <option value="uniform">Uniform</option>
+        <option value="exponential">Exponential</option>
+        <option value="binomial">Binomial</option>
+    </select>
+    <br><br>
+    <label for="sampleSize">Sample Size:</label>
+    <input type="number" id="sampleSize" value="30" min="1" max="100">
+    <button onclick="runSimulation()">Run Simulation</button>
+    <div id="plot" style="width: 100%; height: 600px;"></div>
 
-Key p
+    <script>
+        function generateData(dist, size) {
+            let data = [];
+            if (dist === 'uniform') {
+                for (let i = 0; i < size; i++) data.push(Math.random());
+            } else if (dist === 'exponential') {
+                for (let i = 0; i < size; i++) data.push(-Math.log(1 - Math.random()));
+            } else if (dist === 'binomial') {
+                for (let i = 0; i < size; i++) {
+                    let count = 0;
+                    for (let j = 0; j < 10; j++) if (Math.random() < 0.5) count++;
+                    data.push(count);
+                }
+            }
+            return data;
+        }
 
-Let 
-𝑋
-1
-,
-𝑋
-2
-,
-…
-,
-𝑋
-𝑛
-X 
-1
-​
- ,X 
-2
-​
- ,…,X 
-n
-​
- _
-𝜇
-μ a_
-𝜎
-σ_
+        function runSimulation() {
+            const dist = document.getElementById('distribution').value;
+            const n = parseInt(document.getElementById('sampleSize').value);
+            const iterations = 1000;
+            const sampleMeans = [];
 
-Then, the standardized sample mean:
+            for (let i = 0; i < iterations; i++) {
+                const sample = generateData(dist, n);
+                const mean = sample.reduce((a, b) => a + b, 0) / sample.length;
+                sampleMeans.push(mean);
+            }
 
-𝑍
-=
-𝑋
-ˉ
-−
-𝜇
-𝜎
-/
-𝑛
-Z= 
-σ/ 
-n
-​
- 
-X
-ˉ
- −μ
-​
- 
-converges in distribution to 
-𝑁
-(
-0
-,
-1
-)
-N(0,1) as 
-𝑛
-→
-∞
-n→∞.
+            const trace = {
+                x: sampleMeans,
+                type: 'histogram',
+                marker: { color: 'steelblue' },
+                opacity: 0.75,
+            };
 
-2. Simulation Plan
-We'll simulate sampling distributions from three population types:
+            const layout = {
+                title: `Sampling Distribution (n = ${n}, dist = ${dist})`,
+                xaxis: { title: 'Sample Mean' },
+                yaxis: { title: 'Frequency' },
+            };
 
-Uniform Distribution 
-𝑈
-(
-0
-,
-1
-)
-U(0,1)
-
-Exponential Distribution 
-𝜆
-=
-1
-λ=1
-
-Binomial Distribution 
-𝑛
-=
-10
-,
-𝑝
-=
-0.5
-n=10,p=0.5
-
-Procedure:
-Generate a large population dataset from each distribution.
-
-Randomly draw samples of sizes 5, 10, 30, 50.
-
-Repeat sampling 1000 times and compute the sample mean.
-
-Plot the sampling distribution of the sample mean.
-
-3. Python Implementation & Visualization
-Below is an example snippet for generating and visualizing one distribution:
-
-python
-Kopyala
-Düzenle
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-np.random.seed(42)
-population = np.random.exponential(scale=1, size=100000)
-
-sample_sizes = [5, 10, 30, 50]
-repeats = 1000
-
-plt.figure(figsize=(14, 10))
-for i, n in enumerate(sample_sizes, 1):
-    means = [np.mean(np.random.choice(population, n)) for _ in range(repeats)]
-    plt.subplot(2, 2, i)
-    sns.histplot(means, kde=True, bins=30)
-    plt.title(f"Sample Size = {n}")
-    plt.xlabel("Sample Mean")
-    plt.ylabel("Frequency")
-
-plt.suptitle("Sampling Distribution of the Mean (Exponential Population)", fontsize=16)
-plt.tight_layout(rect=[0, 0, 1, 0.95])
-plt.show()
-4. Observations & Insights
-✅ Convergence to Normality:
-As sample size increases, sampling distribution of the mean becomes more symmetric and bell-shaped — even when the population is skewed (e.g., exponential).
-
-📈 Spread & Variance:
-Larger sample sizes result in narrower distributions.
-
-The standard deviation of the sample mean decreases at the rate of 
-𝜎
-𝑛
-n
-​
- 
-σ
-​
- .
-
-5. Real-World Applications
-CLT is foundational for:
-
-📊 Estimating population parameters using sample statistics.
-
-🏭 Quality control in manufacturing processes.
-
-💰 Financial modeling and risk analysis.
-
-🧪 Scientific inference: building confidence intervals and hypothesis tests.
-
-Even with non-normal data, inference on means remains valid due to CLT.
-
-6. Interactive Extension (Optional)
-Want a JS/Plotly animation (like your projectile example) showing histogram evolution as sample size increases? I can generate that as well!
+            Plotly.newPlot('plot', [trace], layout);
+        }
+    </script>
+</body>
+</html>
