@@ -29,75 +29,51 @@ Where:
 ## 3. Python Simulation Code
 
 
-import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-
-# Constants and initial conditions
-q = 1.0      # Charge
-m = 1.0      # Mass
-v0 = np.array([1.0, 0.0, 1.0])  # Initial velocity
-r0 = np.array([0.0, 0.0, 0.0])  # Initial position
-
-# Field configurations
-E = np.array([0.0, 0.0, 0.0])   # Electric field
-B = np.array([0.0, 0.0, 1.0])   # Magnetic field (uniform)
-
-# Time parameters
-dt = 0.01
-steps = 5000
-
-# Storage for trajectory
-trajectory = np.zeros((steps, 3))
-velocity = v0.copy()
-position = r0.copy()
-
-# Simulation using Euler method
-for i in range(steps):
-    F = q * (E + np.cross(velocity, B))
-    a = F / m
-    velocity += a * dt
-    position += velocity * dt
-    trajectory[i] = position
-
-# Plotting 3D Trajectory
-fig = plt.figure(figsize=(10, 6))
-ax = fig.add_subplot(111, projection='3d')
-ax.plot(trajectory[:,0], trajectory[:,1], trajectory[:,2])
-ax.set_title("Particle Trajectory in a Magnetic Field")
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-ax.set_zlabel("z")
-plt.tight_layout()
-plt.show()
-
-
-
-
 ---
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Particle Trajectory</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
 
-## 4. Observations
+    <h1>Particle Trajectory Simulation</h1>
+    <div id="plotDiv" style="width:700px;height:500px;">
+        </div>
 
-- **Circular motion** is observed in the plane perpendicular to the magnetic field.
-- **Helical motion** results from an initial velocity with a component parallel to the magnetic field.
-- **Larmor Radius**: Defined as \( r_L = \frac{mv_\perp}{qB} \)
-- **Drift Motion**: Occurs in crossed electric and magnetic fields.
+    <script>
+        // Veriyi yüklemek ve grafiği çizmek için JavaScript kodu
+        fetch('trajectory_data.json')
+            .then(response => response.json())
+            .then(data => {
+                var trace = {
+                    x: data.x,
+                    y: data.y,
+                    z: data.z,
+                    mode: 'lines',
+                    type: 'scatter3d'
+                };
 
----
+                var layout = {
+                    title: 'Particle Trajectory in a Magnetic Field (Interactive)',
+                    scene: {
+                        xaxis: {title: 'x'},
+                        yaxis: {title: 'y'},
+                        zaxis: {title: 'z'}
+                    },
+                    margin: {
+                        l: 0,
+                        r: 0,
+                        b: 0,
+                        t: 50
+                    }
+                };
 
-## 5. Extending the Simulation
+                Plotly.newPlot('plotDiv', [trace], layout);
+            })
+            .catch(error => console.error('Error loading the trajectory data:', error));
+    </script>
 
-- Introduce **non-uniform magnetic fields** to simulate mirror traps.
-- Include **relativistic effects** at high velocities.
-- Add **collision effects** (e.g., using Monte Carlo methods) to simulate plasma dynamics.
-
----
-
-## 6. Real-world Applications
-
-| System            | Role of Lorentz Force |
-|-------------------|------------------------|
-| Cyclotron         | Circular acceleration of particles |
-| Mass Spectrometer | Particle deflection for mass identification |
-| Magnetic Trap     | Plasma confinement by magnetic pressure |
-
+</body>
+</html>
