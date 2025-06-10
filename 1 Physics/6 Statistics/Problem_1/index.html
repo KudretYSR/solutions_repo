@@ -171,7 +171,100 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-1">Problem 1</h1>
+<p>📄 Markdown Report: Exploring the Central Limit Theorem with Simulations
+1. Simulating Sampling Distributions
+We investigate the Central Limit Theorem (CLT) using the following population distributions:</p>
+<p>Uniform distribution 
+𝑈
+(
+0
+,
+1
+)
+U(0,1)</p>
+<p>Exponential distribution 
+Exp
+(
+𝜆
+=
+1
+)
+Exp(λ=1)</p>
+<p>Binomial distribution 
+Binomial
+(
+𝑛
+=
+10
+,
+𝑝
+=
+0.5
+)
+Binomial(n=10,p=0.5)</p>
+<p>Each population is simulated with 100,000 data points.</p>
+<ol>
+<li>Sampl
+We extract samples of sizes 5, 10, 30, and 50. For each size, we:</li>
+</ol>
+<p>Draw 1000 samples.</p>
+<p>Compute their m</p>
+<p>Plot the histogram of sample means.</p>
+<p>This is done for each population t</p>
+<ol>
+<li>Par
+The</li>
+</ol>
+<p>Hig</p>
+<ol>
+<li>Pr
+Esti when</li>
+</ol>
+<p>Qua,</p>
+<p>Financ, whe</p>
+<p>🐍
+pyt
+Kopyala
+Düzenle
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns</p>
+<p>sns.set(style='whitegrid')</p>
+<h1 id="population-generators">Population generators</h1>
+<p>def generate_population(distribution, size=100000):
+    if distribution == "uniform":
+        return np.random.uniform(0, 1, size)
+    elif distribution == "exponential":
+        return np.random.exponential(1, size)
+    elif distribution == "binomial":
+        return np.random.binomial(n=10, p=0.5, size=size)
+    else:
+        raise ValueError("Unsupported distribution.")</p>
+<h1 id="sampling-and-averaging">Sampling and averaging</h1>
+<p>def sample_means(population, sample_size, n_samples=1000):
+    means = []
+    for _ in range(n_samples):
+        sample = np.random.choice(population, sample_size, replace=False)
+        means.append(np.mean(sample))
+    return means</p>
+<h1 id="plotting-function">Plotting function</h1>
+<p>def plot_sampling_distribution(means_dict, dist_name):
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    fig.suptitle(f"Sampling Distribution of the Mean: {dist_name.capitalize()} Distribution", fontsize=16)
+    sizes = sorted(means_dict.keys())
+    for ax, size in zip(axes.flatten(), sizes):
+        sns.histplot(means_dict[size], kde=True, ax=ax, bins=30, color='skyblue')
+        ax.set_title(f"Sample size = {size}")
+        ax.set_xlabel("Sample Mean")
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.show()</p>
+<h1 id="run-for-each-distribution">Run for each distribution</h1>
+<p>distributions = ["uniform", "exponential", "binomial"]
+sample_sizes = [5, 10, 30, 50]</p>
+<p>for dist in distributions:
+    pop = generate_population(dist)
+    means_dict = {size: sample_means(pop, size) for size in sample_sizes}
+    plot_sampling_distribution(means_dict, dist)</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
