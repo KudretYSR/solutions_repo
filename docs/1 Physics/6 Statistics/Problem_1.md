@@ -1,8 +1,72 @@
-📄 Markdown Report: Exploring the Central Limit Theorem with Simulations
-1. Simulating Sampling Distributions
-We investigate the Central Limit Theorem (CLT) using the following population distributions:
+1. Theoretical Foundati
+The Central Limit Theorem (CL states tnormal distr, a
 
-Uniform distribution 
+Key p
+
+Let 
+𝑋
+1
+,
+𝑋
+2
+,
+…
+,
+𝑋
+𝑛
+X 
+1
+​
+ ,X 
+2
+​
+ ,…,X 
+n
+​
+ _
+𝜇
+μ a_
+𝜎
+σ_
+
+Then, the standardized sample mean:
+
+𝑍
+=
+𝑋
+ˉ
+−
+𝜇
+𝜎
+/
+𝑛
+Z= 
+σ/ 
+n
+​
+ 
+X
+ˉ
+ −μ
+​
+ 
+converges in distribution to 
+𝑁
+(
+0
+,
+1
+)
+N(0,1) as 
+𝑛
+→
+∞
+n→∞.
+
+2. Simulation Plan
+We'll simulate sampling distributions from three population types:
+
+Uniform Distribution 
 𝑈
 (
 0
@@ -11,18 +75,13 @@ Uniform distribution
 )
 U(0,1)
 
-Exponential distribution 
-Exp
-(
+Exponential Distribution 
 𝜆
 =
 1
-)
-Exp(λ=1)
+λ=1
 
-Binomial distribution 
-Binomial
-(
+Binomial Distribution 
 𝑛
 =
 10
@@ -30,80 +89,74 @@ Binomial
 𝑝
 =
 0.5
-)
-Binomial(n=10,p=0.5)
+n=10,p=0.5
 
-Each population is simulated with 100,000 data points.
+Procedure:
+Generate a large population dataset from each distribution.
 
-2. Sampl
-We extract samples of sizes 5, 10, 30, and 50. For each size, we:
+Randomly draw samples of sizes 5, 10, 30, 50.
 
-Draw 1000 samples.
+Repeat sampling 1000 times and compute the sample mean.
 
-Compute their m
+Plot the sampling distribution of the sample mean.
 
-Plot the histogram of sample means.
+3. Python Implementation & Visualization
+Below is an example snippet for generating and visualizing one distribution:
 
-This is done for each population t
-
-3. Par
-The
-
-Hig
-
-4. Pr
-Esti when
-
-Qua,
-
-Financ, whe
-
-🐍
-pyt
+python
 Kopyala
 Düzenle
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-sns.set(style='whitegrid')
+np.random.seed(42)
+population = np.random.exponential(scale=1, size=100000)
 
-# Population generators
-def generate_population(distribution, size=100000):
-    if distribution == "uniform":
-        return np.random.uniform(0, 1, size)
-    elif distribution == "exponential":
-        return np.random.exponential(1, size)
-    elif distribution == "binomial":
-        return np.random.binomial(n=10, p=0.5, size=size)
-    else:
-        raise ValueError("Unsupported distribution.")
-
-# Sampling and averaging
-def sample_means(population, sample_size, n_samples=1000):
-    means = []
-    for _ in range(n_samples):
-        sample = np.random.choice(population, sample_size, replace=False)
-        means.append(np.mean(sample))
-    return means
-
-# Plotting function
-def plot_sampling_distribution(means_dict, dist_name):
-    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
-    fig.suptitle(f"Sampling Distribution of the Mean: {dist_name.capitalize()} Distribution", fontsize=16)
-    sizes = sorted(means_dict.keys())
-    for ax, size in zip(axes.flatten(), sizes):
-        sns.histplot(means_dict[size], kde=True, ax=ax, bins=30, color='skyblue')
-        ax.set_title(f"Sample size = {size}")
-        ax.set_xlabel("Sample Mean")
-    plt.tight_layout(rect=[0, 0, 1, 0.95])
-    plt.show()
-
-# Run for each distribution
-distributions = ["uniform", "exponential", "binomial"]
 sample_sizes = [5, 10, 30, 50]
+repeats = 1000
 
-for dist in distributions:
-    pop = generate_population(dist)
-    means_dict = {size: sample_means(pop, size) for size in sample_sizes}
-    plot_sampling_distribution(means_dict, dist)
+plt.figure(figsize=(14, 10))
+for i, n in enumerate(sample_sizes, 1):
+    means = [np.mean(np.random.choice(population, n)) for _ in range(repeats)]
+    plt.subplot(2, 2, i)
+    sns.histplot(means, kde=True, bins=30)
+    plt.title(f"Sample Size = {n}")
+    plt.xlabel("Sample Mean")
+    plt.ylabel("Frequency")
+
+plt.suptitle("Sampling Distribution of the Mean (Exponential Population)", fontsize=16)
+plt.tight_layout(rect=[0, 0, 1, 0.95])
+plt.show()
+4. Observations & Insights
+✅ Convergence to Normality:
+As sample size increases, sampling distribution of the mean becomes more symmetric and bell-shaped — even when the population is skewed (e.g., exponential).
+
+📈 Spread & Variance:
+Larger sample sizes result in narrower distributions.
+
+The standard deviation of the sample mean decreases at the rate of 
+𝜎
+𝑛
+n
+​
+ 
+σ
+​
+ .
+
+5. Real-World Applications
+CLT is foundational for:
+
+📊 Estimating population parameters using sample statistics.
+
+🏭 Quality control in manufacturing processes.
+
+💰 Financial modeling and risk analysis.
+
+🧪 Scientific inference: building confidence intervals and hypothesis tests.
+
+Even with non-normal data, inference on means remains valid due to CLT.
+
+6. Interactive Extension (Optional)
+Want a JS/Plotly animation (like your projectile example) showing histogram evolution as sample size increases? I can generate that as well!
