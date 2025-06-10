@@ -169,87 +169,70 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h2>4. Interactive Simulation: Measuring \( g \) with a Pendulum</h2>
-<p>
-  Use the controls below to simulate the measurement of gravitational acceleration \( g \) using a pendulum. 
-  You can adjust the pendulum length, number of trials, and timer error. The animation updates in real-time.
-</p>
 <div class="controls">
-<label>Pendulum Length (L, m): 
-    <input id="length" step="0.01" type="number" value="1.00"/>
+<label>Uzunluk (L, m): 
+    <input id="length" step="0.1" type="number" value="1.0"/>
 </label>
-<label>Stopwatch Error (ΔT, s): 
-    <input id="timerError" step="0.01" type="number" value="0.05"/>
+<label>Açı (θ, derece): 
+    <input id="angle" step="1" type="number" value="10"/>
 </label>
-<label>Number of Trials (n): 
-    <input id="trials" step="1" type="number" value="10"/>
+<label>Süre (s): 
+    <input id="duration" step="1" type="number" value="10"/>
 </label>
 </div>
 <canvas height="400" id="canvas" width="600"></canvas>
 <script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
 
-const g_actual = 9.81; // m/s^2
-let dt = 0.02;
+  const g = 9.81; // Yerçekimi ivmesi
+  const dt = 0.02;
+  let t = 0;
 
-function getParams() {
-  return {
-    L: parseFloat(document.getElementById("length").value),
-    deltaT: parseFloat(document.getElementById("timerError").value),
-    n: parseInt(document.getElementById("trials").value)
-  };
-}
+  function getParams() {
+    return {
+      L: parseFloat(document.getElementById("length").value),
+      angle: parseFloat(document.getElementById("angle").value) * Math.PI / 180,
+      duration: parseFloat(document.getElementById("duration").value)
+    };
+  }
 
-function calculate() {
-  const { L, deltaT, n } = getParams();
+  function drawPendulum(x, y) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(x, y);
+    ctx.stroke();
 
-  const T_theoretical = 2 * Math.PI * Math.sqrt(L / g_actual);
-  const sigma = deltaT; // assumed timing std dev
-  const deltaT_bar = sigma / Math.sqrt(n);
-  const T = T_theoretical - deltaT_bar;
-  const g_measured = (4 * Math.PI * Math.PI * L) / (T * T);
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, 2 * Math.PI);
+    ctx.fill();
+  }
 
-  const delta_g = g_measured * Math.sqrt(
-    Math.pow(0.005 / L, 2) + // Assume length uncertainty of 0.5 cm
-    Math.pow((2 * deltaT_bar) / T, 2)
-  );
+  function animate() {
+    const { L, angle, duration } = getParams();
+    const omega = Math.sqrt(g / L);
+    const theta = angle * Math.cos(omega * t);
 
-  return { T, g_measured, delta_g };
-}
+    const x = canvas.width / 2 + L * 100 * Math.sin(theta);
+    const y = L * 100 * Math.cos(theta);
 
-function drawSimulation() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPendulum(x, y);
 
-  const { L } = getParams();
-  const pxPerMeter = 200;
-  const origin = { x: canvas.width / 2, y: 50 };
-  const lengthPx = L * pxPerMeter;
-  const theta = Math.PI / 6;
-  const bobX = origin.x + lengthPx * Math.sin(theta);
-  const bobY = origin.y + lengthPx * Math.cos(theta);
+    if (t < duration) {
+      t += dt;
+      requestAnimationFrame(animate);
+    }
+  }
 
-  // Draw pendulum line
-  ctx.beginPath();
-  ctx.moveTo(origin.x, origin.y);
-  ctx.lineTo(bobX, bobY);
-  ctx.stroke();
+  document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("change", () => {
+      t = 0;
+      animate();
+    });
+  });
 
-  // Draw bob
-  ctx.beginPath();
-  ctx.arc(bobX, bobY, 10, 0, 2 * Math.PI);
-  ctx.fillStyle = "red";
-  ctx.fill();
-
-  // Draw results
-  const { T, g_measured, delta_g } = calculate();
-  ctx.fillStyle = "white";
-  ctx.font = "16px Arial";
-  ctx.fillText(`Measured g: ${g_measured.toFixed(2)} ± ${delta_g.toFixed(2)} m/s²`, 20, canvas.height - 60);
-  ctx.fillText(`Period (T): ${T.toFixed(2)} s`, 20, canvas.height - 40);
-}
-
-setInterval(drawSimulation, 100);
+  animate(); // Başlangıç animasyonu
 </script>
 </div>
 </div><footer>
