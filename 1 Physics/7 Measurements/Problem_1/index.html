@@ -169,71 +169,100 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<div class="controls">
-<label>Uzunluk (L, m): 
-    <input id="length" step="0.1" type="number" value="1.0"/>
-</label>
-<label>Açı (θ, derece): 
-    <input id="angle" step="1" type="number" value="10"/>
-</label>
-<label>Süre (s): 
-    <input id="duration" step="1" type="number" value="10"/>
-</label>
-</div>
-<canvas height="400" id="canvas" width="600"></canvas>
-<script>
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
+<!DOCTYPE html>
 
-  const g = 9.81; // Yerçekimi ivmesi
-  const dt = 0.02;
-  let t = 0;
-
-  function getParams() {
-    return {
-      L: parseFloat(document.getElementById("length").value),
-      angle: parseFloat(document.getElementById("angle").value) * Math.PI / 180,
-      duration: parseFloat(document.getElementById("duration").value)
-    };
-  }
-
-  function drawPendulum(x, y) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, 0);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(x, y, 10, 0, 2 * Math.PI);
-    ctx.fill();
-  }
-
-  function animate() {
-    const { L, angle, duration } = getParams();
-    const omega = Math.sqrt(g / L);
-    const theta = angle * Math.cos(omega * t);
-
-    const x = canvas.width / 2 + L * 100 * Math.sin(theta);
-    const y = L * 100 * Math.cos(theta);
-
-    drawPendulum(x, y);
-
-    if (t < duration) {
-      t += dt;
-      requestAnimationFrame(animate);
-    }
-  }
-
-  document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("change", () => {
-      t = 0;
-      animate();
-    });
-  });
-
-  animate(); // Başlangıç animasyonu
-</script>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Forced Damped Pendulum Simulation</title>
+<style>
+        /* This is a simple style block, assuming the 60px width was for some element */
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        p {
+            line-height: 1.6;
+        }
+        /* Assuming 'width: 60px' was for something like an input based on image_14be37.png */
+        input {
+            width: 60px; /* Example styling based on your image */
+        }
+    </style>
+</head>
+<body>
+<h1>Forced Damped Pendulum Simulation</h1>
+<h2>1. Theoretical Foundation</h2>
+<p>The motion of a forced damped pendulum is governed by the nonlinear differential equation:</p>
+<p>$$ \frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin\theta = A\cos(\omega t) $$</p>
+<p>Where:</p>
+<ul>
+<li>$\theta$: angular displacement</li>
+<li>$b$: damping coefficient</li>
+<li>$\frac{g}{L}$: natural frequency term</li>
+<li>$A\cos(\omega t)$: external periodic driving force</li>
+</ul>
+<h2>2. Analysis of Dynamics</h2>
+<ul>
+<li>Observe how the damping $b$, amplitude $A$, and frequency $\omega$ affect the pendulum's motion.</li>
+<li>Study the transition from periodic to chaotic motion.</li>
+<li>Explore phase-space behavior and long-term stability.</li>
+</ul>
+<h2>3. Practical Applications</h2>
+<ul>
+<li>Energy harvesting systems</li>
+<li>Suspension bridge dynamics</li>
+<li>Oscillating circuits and resonance control</li>
+</ul>
+</body>
+</html>
+<p>Forced Damped Pendulum Simulation</p>
+<ol>
+<li>Theoretical Foundation
+The motion of a forced damped pendulum is governed by the nonlinear differential equation:
+dt 
+2</li>
+</ol>
+<p>d 
+2
+ θ
+​
+ +b 
+dt
+dθ
+​
+ + 
+L
+g
+​
+ sinθ=Acos(ωt)</p>
+<p>Where:</p>
+<p>θ: angular displacement
+b: damping coefficient
+L
+g
+​
+ : natural frequency term
+Acos(ωt): external periodic driving force
+2. Analysis of Dynamics</p>
+<p>Observe how the damping b, amplitude A, and frequency ω affect the pendulum's motion.
+Study the transition from periodic to chaotic motion.
+Explore phase-space behavior and long-term stability.
+3. Practical Applications</p>
+<p>Energy harvesting systems
+Suspension bridge dynamics
+Oscillating circuits and resonance control</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
