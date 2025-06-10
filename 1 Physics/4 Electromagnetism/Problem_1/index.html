@@ -200,80 +200,52 @@
 </ul>
 <hr/>
 <h2 id="3-python-simulation-code">3. Python Simulation Code</h2>
-<p>import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D</p>
-<h1 id="constants-and-initial-conditions">Constants and initial conditions</h1>
-<p>q = 1.0      # Charge
-m = 1.0      # Mass
-v0 = np.array([1.0, 0.0, 1.0])  # Initial velocity
-r0 = np.array([0.0, 0.0, 0.0])  # Initial position</p>
-<h1 id="field-configurations">Field configurations</h1>
-<p>E = np.array([0.0, 0.0, 0.0])   # Electric field
-B = np.array([0.0, 0.0, 1.0])   # Magnetic field (uniform)</p>
-<h1 id="time-parameters">Time parameters</h1>
-<p>dt = 0.01
-steps = 5000</p>
-<h1 id="storage-for-trajectory">Storage for trajectory</h1>
-<p>trajectory = np.zeros((steps, 3))
-velocity = v0.copy()
-position = r0.copy()</p>
-<h1 id="simulation-using-euler-method">Simulation using Euler method</h1>
-<p>for i in range(steps):
-    F = q * (E + np.cross(velocity, B))
-    a = F / m
-    velocity += a * dt
-    position += velocity * dt
-    trajectory[i] = position</p>
-<h1 id="plotting-3d-trajectory">Plotting 3D Trajectory</h1>
-<p>fig = plt.figure(figsize=(10, 6))
-ax = fig.add_subplot(111, projection='3d')
-ax.plot(trajectory[:,0], trajectory[:,1], trajectory[:,2])
-ax.set_title("Particle Trajectory in a Magnetic Field")
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-ax.set_zlabel("z")
-plt.tight_layout()
-plt.show()</p>
 <hr/>
-<h2 id="4-observations">4. Observations</h2>
-<ul>
-<li><strong>Circular motion</strong> is observed in the plane perpendicular to the magnetic field.</li>
-<li><strong>Helical motion</strong> results from an initial velocity with a component parallel to the magnetic field.</li>
-<li><strong>Larmor Radius</strong>: Defined as <span class="arithmatex">\( r_L = \frac{mv_\perp}{qB} \)</span></li>
-<li><strong>Drift Motion</strong>: Occurs in crossed electric and magnetic fields.</li>
-</ul>
-<hr/>
-<h2 id="5-extending-the-simulation">5. Extending the Simulation</h2>
-<ul>
-<li>Introduce <strong>non-uniform magnetic fields</strong> to simulate mirror traps.</li>
-<li>Include <strong>relativistic effects</strong> at high velocities.</li>
-<li>Add <strong>collision effects</strong> (e.g., using Monte Carlo methods) to simulate plasma dynamics.</li>
-</ul>
-<hr/>
-<h2 id="6-real-world-applications">6. Real-world Applications</h2>
-<table>
-<thead>
-<tr>
-<th>System</th>
-<th>Role of Lorentz Force</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Cyclotron</td>
-<td>Circular acceleration of particles</td>
-</tr>
-<tr>
-<td>Mass Spectrometer</td>
-<td>Particle deflection for mass identification</td>
-</tr>
-<tr>
-<td>Magnetic Trap</td>
-<td>Plasma confinement by magnetic pressure</td>
-</tr>
-</tbody>
-</table>
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>3D Particle Trajectory</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<h1>Particle Trajectory Simulation</h1>
+<div id="plotDiv" style="width:700px;height:500px;">
+</div>
+<script>
+        // Veriyi yüklemek ve grafiği çizmek için JavaScript kodu
+        fetch('trajectory_data.json')
+            .then(response => response.json())
+            .then(data => {
+                var trace = {
+                    x: data.x,
+                    y: data.y,
+                    z: data.z,
+                    mode: 'lines',
+                    type: 'scatter3d'
+                };
+
+                var layout = {
+                    title: 'Particle Trajectory in a Magnetic Field (Interactive)',
+                    scene: {
+                        xaxis: {title: 'x'},
+                        yaxis: {title: 'y'},
+                        zaxis: {title: 'z'}
+                    },
+                    margin: {
+                        l: 0,
+                        r: 0,
+                        b: 0,
+                        t: 50
+                    }
+                };
+
+                Plotly.newPlot('plotDiv', [trace], layout);
+            })
+            .catch(error => console.error('Error loading the trajectory data:', error));
+    </script>
+</body>
+</html>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
